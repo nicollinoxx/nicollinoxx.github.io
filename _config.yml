@@ -33,6 +33,7 @@ disqus:
 minima:
   skin: solarized
 
+ google_analytics: UA-172830301-1
 # Build settings
 theme: minima
 
