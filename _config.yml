@@ -27,12 +27,29 @@ url: "https://nicollinoxx.github.io" # the base hostname & protocol for your sit
 # twitter_username: jekyllrb
 github_username:  nicollinoxx
 
+lang: pt_BR
+
 disqus:
   shortname: nicollinoxx
 
 minima:
   skin: solarized
 google_analytics: UA-172830301-1
+
+twitter:
+  username: nicollinoxx
+  card: summary
+
+facebook:
+  publisher: https://www.facebook.com/profile.php?id=100019137916714
+
+social:
+  name: nicollinoxx
+  links:
+     https://github.com/nicollinoxx
+     https://twitter.com/nicollinoxx
+     https://github.com/nicollinoxx
+     https://www.facebook.com/profile.php?id=100019137916714
 # Build settings
 theme: minima
 
