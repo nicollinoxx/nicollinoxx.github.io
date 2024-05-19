@@ -33,7 +33,7 @@ disqus:
   shortname: nicollinoxx
 
 minima:
-  skin: solarized
+  skin: classic
 google_analytics: UA-172830301-1
 
 twitter:
@@ -48,9 +48,8 @@ social:
   links:
      https://github.com/nicollinoxx
      https://twitter.com/nicollinoxx
-     https://github.com/nicollinoxx
-     https://www.facebook.com/profile.php?id=100019137916714
-# Build settings
+     https://www.instagram.com/nicolasalmeida321/
+    # Build settings
 theme: minima
 
 plugins:
