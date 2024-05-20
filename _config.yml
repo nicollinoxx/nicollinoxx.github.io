@@ -18,14 +18,14 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
+email: "nicolasalmeida321@gmail.com"
 title: Aprendendo a programar
-email: nicolasalmeida321@gmail.com
-description: >- # this means to ignore newlines until "baseurl:"
+description:
   Neste blog vou postar como estou aprendendo a programar.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://nicollinoxx.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-# twitter_username: jekyllrb
-github_username:  nicollinoxx
+# the base hostname & protocol for your site, e.g. http://example.com
+url:                 "https://nicollinoxx.github.io"
+github_username:     nicollinoxx
+twitter_username:    Nícolas
 
 lang: pt_BR
 
@@ -34,22 +34,13 @@ disqus:
 
 minima:
   skin: classic
-google_analytics: UA-172830301-1
+  google_analytics: UA-172830301-1
+  minima:
+  social_links:
+    - { platform: github,  user_url: "https://github.com/nicollinoxx" }
+    - { platform: twitter, user_url: "https://twitter.com/nicollinoxx" }
 
-twitter:
-  username: nicollinoxx
-  card: summary
-
-facebook:
-  publisher: https://www.facebook.com/profile.php?id=100019137916714
-
-social:
-  name: nicollinoxx
-  links:
-     https://github.com/nicollinoxx
-     https://twitter.com/nicollinoxx
-     https://www.instagram.com/nicolasalmeida321/
-    # Build settings
+# Build settings
 theme: minima
 
 plugins:
