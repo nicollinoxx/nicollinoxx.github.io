@@ -32,10 +32,10 @@ lang: pt_BR
 disqus:
   shortname: nicollinoxx
 
+google_analytics: UA-172830301-1
+
 minima:
   skin: classic
-  google_analytics: UA-172830301-1
-  minima:
   social_links:
     - { platform: github,  user_url: "https://github.com/nicollinoxx" }
     - { platform: twitter, user_url: "https://twitter.com/nicollinoxx" }
