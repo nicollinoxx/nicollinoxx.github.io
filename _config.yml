@@ -23,9 +23,10 @@ title: Aprendendo a programar
 description:
   Neste blog vou postar como estou aprendendo a programar.
 # the base hostname & protocol for your site, e.g. http://example.com
-url:                 "https://nicollinoxx.github.io"
-github_username:     nicollinoxx
-twitter_username:    Nícolas
+url:                "https://nicollinoxx.github.io"
+github_username:    nicollinoxx
+twitter_username:   nicollinoxx
+linkedin_username:  Nícolas-Amaral
 
 lang: pt_BR
 
@@ -36,9 +37,11 @@ google_analytics: UA-172830301-1
 
 minima:
   skin: classic
-  social_links:
-    - { platform: github,  user_url: "https://github.com/nicollinoxx" }
-    - { platform: twitter, user_url: "https://twitter.com/nicollinoxx" }
+
+social_links:
+  - { platform: github,   user_url: "https://github.com/nicollinoxx" }
+  - { platform: twitter,  user_url: "https://x.com/nicollinoxx" }
+  - { platform: linkedin, user_url: "https://www.linkedin.com/in/Nícolas-Amaral/"}
 
 # Build settings
 theme: minima
