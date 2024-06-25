@@ -1,0 +1,166 @@
+---
+layout: post
+title: "Iniciando com Ruby on Rails"
+date: 2024-06-23 22:03:13 -0300
+categories: tutorial
+---
+<div>
+  <p>
+    Aprender "Ruby on Rails" foi a etapa mais satisfatória e desafiadora durante minha jornada como programador.
+    No início, foi relativamente difícil me adaptar ao padrão MVC, ao uso da ferramenta ORM para interagir com os bancos de dados,
+    ao sistema de migrações e às requisições HTTP. Antes mesmo de começar a usar o framework, eu não sabia o que era MVC (Model, View e Controller) e
+    muito menos como interagir com os bancos de dados. A dificuldade era compreensível, pois eu era iniciante. No entanto, à medida que fui avançando,
+    tornou-se mais fácil lidar com o framework.
+  </p>
+
+  <p>
+    Foi extremamente satisfatório quando consegui resolver algum erro ou bug. Desenvolver uma funcionalidade simples e ver as coisas
+    acontecendo como planejado foi uma grande conquista. Cada pequeno sucesso me motivava a continuar e a me aprofundar ainda mais no "Ruby on Rails".
+    Além disso, "Ruby on Rails" me permite desenvolver várias aplicações de forma padronizada e muito rápida. A estrutura do framework, facilita a
+    manutenção e a escalabilidade dos projetos.
+  </p>
+
+  <p>
+    Além da satisfação pessoal, também percebi que "Ruby on Rails" também me proporcionou uma metodologia padronizada para desenvolver aplicações de forma
+    rápida e eficiente. O framework segue o princípio de "convenção sobre configuração", o que significa que muitas decisões de design já estão tomadas,
+    permitindo que eu me concentre mais na lógica do negócio e menos na infraestrutura o que agiliza o desenvolvimento e facilita a manutenção do código.
+  </p>
+</div>
+
+<div>
+  <h2>O que é Ruby on Rails</h2>
+  <p>
+    Ruby on Rails, frequentemente abreviado como Rails, é um framework de desenvolvimento web escrito em Ruby.
+    Ele foi projetado para tornar o processo de desenvolvimento de aplicativos web mais rápido e fácil, oferecendo uma
+    estrutura padrão para o desenvolvimento de aplicações.
+  </p>
+
+  <p>
+    Em resumo, Ruby on Rails é uma ferramenta para o desenvolvimento de aplicações web, especialmente aquelas que precisam ser desenvolvidas
+    rapidamente e de forma eficiente.
+  </p>
+</div>
+
+<h2>Primeiro projeto com Rails</h2>
+<p>
+  O seguinte projeto é um blog desenvolvido seguindo o tutorial do Ruby on Rails Guides, mais precisamente em
+  <a href="https://guides.rubyonrails.org/getting_started.html">Getting Started with Rails</a>, o guia desenvolve um blog
+  com criação de posts e comentarios. Este tutorial é ótimo para quem quer aprender rails, pois mostra como usar a
+  arquitura do framework e aplicar validações de campos, exibição de alertas, configuração de rotas, associações,
+  uso de helpers para formularios, como: text_field, text_area, number_field e, também, refatoração de codigo.
+</p>
+
+<h2>Tela de inicio do blog</h2>
+<img src="/assets/img_starting_rails/posts.png" alt="postagens">
+<p>
+  Esta é a tela principal do blog, nela é exibidos todos os posts publicos que estão armazenados no banco de dados.
+</p>
+
+<h3>como funciona?</h3>
+<p>
+  Todos os posts são buscados dentro do controller 'Articles', na função index e depois exibidos na view index. De forma mais
+  detalhada 'Article.all' busca todos os artigos presentes no banco de dados e depois é armazenado na variavel de instancia @articles,
+  que em seguida essa variavel será usada para imprimir todos os posts na view 'index.html.erb', verifique o codigo abaixo.
+</p>
+
+<h4>Controller articles</h4>
+<pre>
+  def index
+   @articles = Article.all
+  end
+</pre>
+
+<h4>View 'index.html.erb'</h4>
+<pre>
+  <% @articles.each do |article| %>
+    <%= link_to article.title, article %>
+  <% end %>
+
+  <%= link_to "New Article", new_article_path, class: 'btn btn-primary mt-2' %>
+</pre>
+
+<h2>Tela de um post e comentario do blog</h2>
+<p>
+  Esta é a tela do post 5 do blog, nela é exibido o conteudo de um post e seus comentarios.
+</p>
+
+<img src="/assets/img_starting_rails/post_and_coments.png" alt="postagem e comentarios">
+
+<h3>como funciona?</h3>
+
+<h4>Post</h4>
+<p>
+  Um post especifico é buscado na função show e exbido na view 'show'.
+  de forma mais detalhada 'Article.find(params[:id])' encontra o post selecionado pelo usuário
+  usando o id do post e depois é armazenado na variavel @article.
+  Em seguida a variavel @article é usada para exibir os elementos que compoem o post, como:
+  titulo e corpo da postagem, na view 'show.html.erb'. De uma olhada na linhas abaixo.
+</p>
+
+<h4>Controller articles</h4>
+<pre>
+  def show
+   @article = Article.find(params[:id])
+  end
+</pre>
+
+<h4>Refatoração e parciais</h4>
+<p>
+  Para não ter que rescrever em todas as views novos elementos de um post é criado as 'partial' ou parciais.
+  Permite que o conteudo especifico de uma arquivo html seja renderizado em varios outros arquivos html. Uma partial
+  é criada com '_' antes do nome do arquivo, por exemplo '_article.html.erb'.
+</p>
+
+<h4>Partial _article.html.erb</h4>
+<pre>
+  <%= @article.title %>
+  <%= @article.body %>
+</pre>
+
+<h4>View show.html.erb</h4>
+<pre>
+  <%= render @article %> #chama a partial '_article.html.erb'
+
+  <%= link_to "Edit", edit_article_path(@article) %>
+  <%= link_to "Destroy", article_path(@article), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+
+  Comments
+    <%= render @article.comments %> #chama a partial _comment.html.erb
+
+  Add a comment:
+    <%= render 'comments/form' %> #chama a partial _form.html.erb
+</pre>
+
+<hr>
+
+<p>
+  Você pode desenvolver esse mesmo blog simples seguindo o tutorial <a href="#">Getting start with Ruby on Rails</a>
+</p>
+
+<h2>Blog estilizado</h2>
+<p>A inteface estava simples demais, então para estilizar o blog adicionei o link do framework de interface
+  <a href="https://getbootstrap.com/">Bootstrap</a> na view 'application.html.erb' para utilizar os atributos
+  presentes no bootstrap.
+</p>
+
+<h4>Tela principal</h4>
+<img src="/assets/img_starting_rails/blog_style.png" alt="blog estilizado">
+
+<h4>Post</h4>
+<img src="/assets/img_starting_rails/post_style.png" alt="post estilizado">
+
+<h3>Conclusão de aprendizado com Ruby on Rails</h3>
+<p>
+  Inicialmente, a experiência de aprender "Ruby on Rails" melhorou minhas expectativas como desenvolvedor.
+  Adquiri uma compreensão um pouco mais aprofundada de arquitetura de software e boas práticas de desenvolvimento.
+  Ruby on Rails me proporcionou ser mais eficiente e, também, mais confiante em assumir novos desafios e explorar
+  o que mais essa ferramenta pode fazer.
+</p>
+
+<p>
+  Aprender "Ruby on Rails" foi uma jornada de desafios, mas cada obstáculo superado se transformou em uma lição de aprendizado.
+  É incrivel ver minhas ideias ganhando vida de forma mais facíl através do uso desse framework, e estou satisfeito com meu desenvolvimento nesse caminho.
+  Além disso, "Ruby on Rails" me ensinou a importância de um desenvolvimento padronizado e a agilidade que ele pode trazer aos projetos.
+  A integração com testes automatizados e a vasta comunidade de desenvolvedores foram aspectos que me ajudaram muito na minha jornada.
+  Contudo, estou animado para continuar aprendendo, evoluindo e buscando novas maneiras de transformar ideias em realidade atraves de algoritmos.
+</p>
