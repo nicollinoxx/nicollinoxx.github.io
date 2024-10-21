@@ -1,0 +1,141 @@
+---
+layout: post
+title: "Tweets agendados"
+date: 2024-10-5 21:33:13 -0300
+categories: tutorial
+---
+
+<div>
+  <h3>Introdução</h3>
+  <p>
+    O próximo projeto foi realizado em 2021 utilizando o Rails 6. Esta aplicação foi fundamental para minha evolução com Ruby on Rails,
+    permitindo-me aprofundar meus conhecimentos na linguagem e no framework. A aplicação consiste em um sistema para agendar tweets, onde o
+    usuário pode programar o envio de mensagens diretamente para o Twitter. Assim, se um tweet estiver agendado para um intervalo de 2 horas, ele
+    será enviado automaticamente assim que esse tempo se esgotar.    <br>
+  </p>
+
+  <p>
+    Repositório do projeto: <a href="https://github.com/nicollinoxx/scheduled_tweets0.2">repositório "Scheduled tweets"</a>
+  </p>
+
+  <h3>Schedule tweets</h3>
+  <p>
+    A aplicação "Schedule Tweets" é um tutorial para iniciantes desenvolvido pelo Go Rails. Essa plataforma oferece uma maneira eficaz de aprender desenvolvimento web e
+    resolver problemas comuns. Os tutoriais abrangem uma variedade de tópicos, como Ruby on Rails, Hotwire, Turbo, Stimulus.js e PostgreSQL. Além disso, o Go Rails possui um
+    canal no YouTube onde você pode acompanhar novos tutoriais que fornece uma abordagem prática e visual para entender os conceitos do Rails.
+    <a href="https://www.youtube.com/@GorailsTV/featured">Canal "Go Rails".</a>
+  </p>
+
+  <h3>Jornada de desenvolvimento</h3>
+  <p>
+    A jornada de desenvolvimento do projeto começou com o aprofundamento nos conceitos da arquitetura "Model, View e Controller" (MVC) e na compreensão das requisições HTTP.
+    A partir daí, começou a construção da aplicação com a implementação do primeiro CRUD, que abordou conceitos de rotas, validações, helpers para formulários e o
+    uso de partials para reutilização de código nas views.
+  </p>
+
+  <p>
+    Para melhorar a aparência da aplicação, foi integrado o framework Bootstrap, o que facilitou a criação de uma interface agradável. A partir desse ponto, também foi configurado a
+    aplicação no GitHub para controle de versão, criando um repositório e fazendo os primeiros commits.
+  </p>
+
+  <p>
+    Em seguida, foi adicionado a funcionalidade de autenticação de usuários e juntamente a ferramenta OmniAuth para permitir o login com o twitter. Essa fase apresentou alguns desafios,
+    pois envolveu a configuração de credenciais e a comunicação segura com o provedor de autenticação. No entanto, a integração foi bem-sucedida.
+  </p>
+
+  <p>
+    Para permitir o agendamento dos tweets, foi utilizado o ActiveJob, uma biblioteca integrada ao Rails que facilita o processamento de tarefas em segundo plano.
+    Essa abordagem foi essencial para que os tweets pudessem ser enviados automaticamente após o tempo programado, sem impactar o desempenho da aplicação.
+  </p>
+
+  <p>
+    Por fim, a aplicação foi implantada no Heroku, uma plataforma de hospedagem que simplifica o processo de publicação. Configurar o ambiente de produção e ver a aplicação funcionando
+    online foi um momento gratificante e um marco importante na minha trajetória como desenvolvedor.
+  </p>
+
+  <h3>Experências</h3>
+   <p>
+     O desenvolvimento completo desse projeto foi desafiador, mas gratificante. Durante o processo, tive a oportunidade de trabalhar com várias ferramentas novas,
+     o que ampliou minhas habilidades. A seguir algumas das principais ferramentas e conceitos que aprendi.
+   </p>
+
+   <ul>
+     <li>
+       <p>
+         <strong>Sidekiq:</strong> Uma ferramenta poderosa para processamento em segundo plano em Ruby on Rails. Com o Sidekiq, você pode executar tarefas que exigem muito tempo
+         (como enviar tweets programados) sem bloquear o desempenho da aplicação. As operações demoradas são tratadas de forma assíncrona.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>pgAdmin:</strong> Uma interface gráfica para gerenciar bancos de dados PostgreSQL. Aprender a usar o pgAdmin facilitou a visualização e manipulação dos dados,
+         permitindo que eu realizasse consultas complexas, verificasse a integridade do banco de dados e otimizasse as tabelas.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>Sessions:</strong> O uso de sessões em Rails permite armazenar informações temporárias no servidor. Isso é essencial para manter dados do usuário entre requisições,
+         como preferências ou estados de autenticação.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>Banco de Dados e Migrações:</strong> Aprofundei-me no conceito de bancos de dados relacionais e na utilização de migrações para gerenciar as mudanças na estrutura do
+         banco. Migrações é importante para manter a integridade do esquema do banco de dados e garantir que ele evolua junto com a aplicação.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>Comandos Git:</strong> Durante o desenvolvimento, usei o Git para versionar meu código, permitindo que eu rastreasse alterações de forma mais eficaz.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>Autenticação com OmniAuth:</strong> Foi implementado o OmniAuth para permitir que a aplicação interaja com o twitter. OmniAuth é uma biblioteca que permite a
+         autenticação através de provedores externos, como Google, Facebook e Twitter. O OmniAuth gerencia as credenciais e a comunicação com os provedores de forma segura,
+         simplificando a integração de autenticação social.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>Bootstrap:</strong> Utilizei o framework Bootstrap para criar um design responsivo e bonito para a aplicação. O Bootstrap oferece uma variedade de
+         componentes pré-estilizados, que facilitam a construção de interfaces de usuário modernas e acessíveis.
+       </p>
+     </li>
+   </ul>
+
+   <p>
+     A etapa final do projeto foi a mais satisfatória, pois foi quando consegui implementar a aplicação na web, hospedando-a no <a href="https://www.heroku.com/">"heroku".</a>. O Heroku
+     simplifica o processo de implantação, permitindo que desenvolvedores publiquem suas aplicações com facilidade, gerenciando toda a infraestrutura necessária. Ver minha aplicação
+     funcionando online foi uma realização incrível e um grande passo em minha jornada como desenvolvedor.
+   </p>
+</div>
+
+<h3>Imagens da aplicação</h3>
+<h4>Tela de boas vindas</h4>
+<img src="/assets/tweets_agendados/welcome.png">
+
+<h4>Tela para connectar a conta do twitter</h4>
+<img src="/assets/tweets_agendados/login.png">
+<p>Aqui é onde a magica acontece. a biblioteca OmniAuth conecta o twitter com a aplicação permitindo que os posts seja enviados para o twitter quando o tempo de espera esgotar.</p>
+
+<h4>Login a conta do twitter efetuado com sucesso</h4>
+<img src="/assets/tweets_agendados/login_account_twitter.jpeg">
+
+<h4>Tweets</h4>
+<img src="/assets/tweets_agendados/index_tweets.png">
+<p>vizualização de posts da aplicação. local onde mostra os tweets agendados e postados</p>
+
+<h3>Conclusão</h3>
+<p>
+  O desenvolvimento desta aplicação proporcionou um aprendizado valioso em diversas áreas do desenvolvimento web com Ruby on Rails. Conceitos como MVC,
+  autenticação com OmniAuth, processamento em segundo plano com Sidekiq, gerenciamento de banco de dados com pgAdmin e design responsivo com Bootstrap,
+  ampliou minhas habilidades como desenvolvedor. Além disso, os desafios enfrentados e superados ao longo do projeto contribuíram para meu crescimento e aprendizado.
+  Ver a aplicação funcionando na web foi uma conquista e tanto.
+</p>
