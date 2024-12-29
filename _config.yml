@@ -20,8 +20,11 @@
 
 email: "nicolasalmeida321@gmail.com"
 title: Aprendendo a programar
+
 description:
-  Neste blog vou postar como estou aprendendo a programar.
+  Este site tem o proposito de mostrar e contar minha experiencia durante minha jornada
+  como desenvolvedor.
+
 # the base hostname & protocol for your site, e.g. http://example.com
 url:                "https://nicollinoxx.github.io"
 github_username:    nicollinoxx
