@@ -1,0 +1,313 @@
+---
+layout: post
+title: 'E-commerce "Depot"'
+date: 2025-01-06 18:19:20 -0300
+categories: tutorial
+---
+
+<div class="">
+  <p>
+    Inicialmente "Depot" é um e-commerce baseado na web desenvolvido com Ruby on Rails 7 seguindo o tutorial do livro <a href="https://pragprog.com/titles/rails7/agile-web-development-with-rails-7/">
+    Agile Web Development with rails 7</a>. Neste post descrevo o projeto desenvolvido, minha experiencia, desafios e algumas ferramentas utilizadas para desenvolver esse projeto.
+  </p>
+</div>
+
+<div>
+  <h3>Agile Web Development with rails 7</h3>
+  <p>
+    <strong>Agile Web Development with Rails 7</strong> ensina, passo a passo, como criar um aplicativo completo com Ruby on Rails. O livro aborda o desenvolvimento de uma loja virtual, integrando JavaScript, envio de e-mails,
+    tarefas assíncronas com Active Job e funcionalidades em tempo real com Action Cable. Além disso, apresenta também outros recursos e técnicas como testes e internacionalização. Com uma abordagem prática e progressiva, é ideal
+    tanto para iniciantes quanto para desenvolvedores que desejam aprimorar suas habilidades no framework. Um ótimo guia para dominar Rails e seus recursos mais recentes.
+  </p>
+</div>
+
+<div>
+  <h3>Depot: Uma Loja Virtual Baseada na Web</h3>
+  <img src="/assets/depot/store.png" alt="Interface da loja Depot">
+  <p>
+    O <strong>Depot</strong>, como mencionado na introdução, é uma aplicação de loja virtual desenvolvida como parte de um tutorial de aprendizado em Rails.
+    O projeto desenvolvido seguindo o tutorial está disponível no repositório <a href="https://github.com/nicollinoxx/Learning-storage" target="_blank">Learning-storage</a> do meu perfil do GitHub.
+    Ele foi inspirado no site <a href="https://pragprog.com/" target="_blank">The Pragmatic Bookshelf</a> e serve como um excelente exemplo de como estruturar uma aplicação completa com diversas funcionalidades.
+  </p>
+  <p>
+    O Depot apresenta algumas funcionalidades principais de uma loja virtual como:
+    <ul>
+      <li>Catálogo de produtos com exibição detalhada.</li>
+      <li>Gestão de pedidos e carrinhos de compras.</li>
+      <li>Integração com sistema de envio de emails.</li>
+      <li>Lista de pedidos.</li>
+      <li>Interface interativa para clientes.</li>
+    </ul>
+  </p>
+
+  <img src="/assets/depot/orders.png" alt="Gerenciamento de pedidos no Depot" style="max-width: 100%; height: auto;">
+  <p>
+    O <strong>Depot</strong> foi construído para explorar conceitos fundamentais do framework Rails e ferramentas modernas.
+    Este projeto é otimo para quem deseja aprender sobre desenvolvimento de aplicações web com Ruby on Rails e explorar funcionalidades práticas e modernas em um ambiente de aprendizado controlado, e futuramente será
+    lançado a nova versão desse livro, porem abordando a versão 8 de <strong>Ruby on Rails</strong>.
+  </p>
+</div>
+
+
+<div>
+  <h3>Minha Experiência</h3>
+  <p>
+    Desenvolver essa loja virtual foi uma experiência gratificante. O livro me permitu mair aproximação com o framework <strong>Ruby on Rails</strong>, permitindo aprender conceitos fundamentais
+    como arquitetura MVC, ORM e uso de <em>concerns</em>. Além disso, apresentou uma introdução prática à linguagem Ruby, abordando tópicos como tipos de dados, arrays, hashes e métodos. O destaque do livro está na sua
+    abordagem didática: explicações claras e objetivas, seguidas por códigos e desafios práticos para consolidar os conhecimentos adquiridos.
+  </p>
+
+  <p>
+    Outro marco importante foi minha primeira experiência com o uso do Docker para fazer o <em>deploy</em> da aplicação. Até então, eu havia utilizado apenas plataformas de hospedagem como
+    <a href="https://www.heroku.com/">Heroku</a> e <a href="https://render.com/">Render</a>. Durante o desenvolvimento, foi utilizado o banco de dados SQLite, enquanto o <em>deploy</em> foi realizado com PostgreSQL.
+  </p>
+
+  <p>
+    Entre as ferramentas destacadas, foi utilizado o <strong>Action Text</strong> para oferecer maior liberdade de personalização ao cliente, especialmente na descrição dos produtos. Além disso, tive minha primeira experiência com
+    o <strong>Action Cable</strong>, implementando funcionalidades em tempo real, como a atualização dinâmica da loja sempre que um produto é adicionado, editado ou removido. Também explorei o <strong>Stimulus</strong> para
+    tornar o formulário de compra mais dinâmico, ajustando os campos exibidos de acordo com o método de pagamento selecionado.
+  </p>
+
+  <p>
+    O uso do <strong>I18n</strong> (internacionalização) foi mais uma descoberta neste projeto. Essa funcionalidade permitiu adicionar suporte para inglês e espanhol, tornando a aplicação mais acessível. Configurei traduções para lidar com formatações
+    específicas de datas, moedas e mensagens personalizadas em diversos contextos da aplicação. Essa prática melhorou a usabilidade e acessibilidade.
+  </p>
+  <p>
+    Os <strong>concerns</strong> foram outra ferramenta valiosa que aprendi a utilizar durante o projeto. Com eles, consegui extrair lógica compartilhada entre diferentes modelos e controladores, mantendo o código limpo e reutilizável. Essa abordagem
+    trouxe maior organização para o código, especialmente ao trabalhar com funcionalidades comuns.
+  </p>
+  <p>
+    Também houve um aperfeiçoamento na aplicação da arquitetura <strong>MVC</strong> e do padrão <strong>ORM</strong>. É importante separar de forma mais clara as responsabilidades entre modelos, controladores e visões, mantendo cada parte focada em
+    seu propósito específico. No contexto do ORM, explorei as capacidades do Active Record para lidar com consultas complexas, associações e validações, simplificando bastante a manipulação dos dados.
+  </p>
+
+  <p>
+    Por fim, a configuração de emails foi realizada com <strong>Action Mailer</strong>, combinado com <strong>Active Job</strong>, ferramenta que já havia utilizado anteriormente. Um exemplo é meu projeto de agendamento de tweets,
+    "Scheduled Tweets", onde usei Active Job e Sidekiq para gerenciar filas de tarefas. É incrivel a versatilidade desse framework.
+  </p>
+</div>
+
+<div>
+  <h3>Desafios</h3>
+  <p>
+    Nesse topico vou apresentar dois desafios que fiz enquanto desenvolvia o projeto lendo o livro, um de nivel mais basico e outro mais avançado, dentro do livro existe varios outros
+    desafios como: calcular quantas vezes foi visitado uma parte do site, escrever testes especificos e adicionar validações, então não seria viavel adicionar todos os desafios.
+    Também esta presente neste tópico, uma breve descrição de algumas ferramentas, conceitos e funcionamento do algoritmo desenvolvido.
+  </p>
+
+  <ul>
+    <li>
+      <h4>Desafio 1: Apos criar tabelas no banco de dados usando migration, examinar as tabelas diretamente executando bin/rails dbconsole.</h4>
+
+      <p>
+        Consultando informações do banco de dados atraves do cmd executando <strong>"rails dbconsole"</strong>. esse comando permite comunicar com banco de dados da aplicação diretamente do cmd.
+      </p>
+  <pre>
+    <strong>n-colas@n-colas-VirtualBox:~/Development/Learning-storage$ </strong>rails dbconsole
+    SQLite version 3.45.1 2024-01-30 16:01:20
+    Enter ".help" for usage hints.
+    sqlite> .mode line
+    sqlite> SELECT id, title, price FROM products;
+       id = 1
+    title = Docker for Rails Developers
+    price = 19.95
+
+       id = 2
+    title = Design and Build Great Web APIs
+    price = 24.95
+
+       id = 3
+    title = Modern CSS with Tailwind
+    price = 18.95
+    sqlite>
+  </pre>
+
+      <p>
+        Ao executar o comando SQL <strong>SELECT id, title, price FROM products;</strong> no terminal, é possível obter os dados de três atributos específicos da tabela de produtos cadastrados na loja: o identificador (id),
+        o título (title) e o preço (price). A tabela de produtos contém outros parâmetros, como descrição (description), URL da imagem (image_url) e localidade (locale), mas a consulta SQL foi configurada para retornar apenas os
+        três primeiros parâmetros. Desse modo, é possivel perceber que o banco de dados funciona é permite fazer consultas e manipulação de dados.
+      </p>
+
+    </li>
+
+    <li>
+      <h4>Desafio 2: Implementar decremento de produtos do carrinho e atualizar o carrinho usando Hotwire.</h4>
+      <p>
+        <strong>Hotwire:</strong> Um conjunto de tecnologias desenvolvido para criar aplicações web interativas com alta performance, minimizando a dependência de JavaScript pesado no lado do cliente. Ele é composto por três principais
+        ferramentas:
+        <ul>
+          <li>
+            <strong>Turbo:</strong> Substitui a necessidade de JavaScript personalizado para atualizações parciais de páginas, utilizando técnicas como Turbo Frames e Turbo Streams para entregar interatividade diretamente do servidor.
+          </li>
+          <li>
+            <strong>Stimulus:</strong> Um framework leve para adicionar comportamento dinâmico a elementos HTML, tornando o código mais organizado e mantendo a lógica do lado do cliente simples e declarativa.
+          </li>
+          <li>
+            <strong>Strada:</strong> Um recurso que conecta o front-end web a aplicativos nativos, permitindo interações híbridas entre os dois ambientes.
+          </li>
+        </ul>
+        Com Hotwire, é possível construir aplicações web rápidas, usando JavaScript apenas onde necessário.
+      </p>
+
+      <p>
+        <strong>Partials</strong> Partiais em Ruby on Rails são arquivos de visualização reutilizáveis que ajudam a evitar a repetição de código. Elas permitem que você extraia trechos de HTML e Ruby que
+        se repetem em diferentes partes do aplicativo, tornando o código mais limpo e modular. Partiais são carregadas com o método render, que pode ser usado para inserir uma parcial em outra visualização ou layout.
+        O nome do arquivo de uma parcial geralmente começa com um sublinhado (_), como _form.html.erb, para indicar que é uma parte de uma visualização maior.
+      </p>
+
+      <h4>Funcionamento da funcionalidade de decrementos</h4>
+      <p>
+        O método <strong>destroy</strong> no controlador <strong>line_items_controller</strong> tem como função principal reduzir a quantidade de itens no carrinho ou removê-los completamente quando a quantidade atinge 1.
+        Essa lógica garante que o estado do carrinho seja sempre atualizado corretamente, tanto para decrementos quanto para exclusões completas. O método também utiliza Turbo Stream para atualização dinâmica, além de suportar redirecionamentos em HTML e
+        respostas em JSON para maior flexibilidade.
+      </p>
+  <pre>
+    # controllers/line_items_controller.rb
+
+    def destroy
+      if @line_item.quantity > 1
+        @line_item.update(quantity: @line_item.quantity - 1)
+      else
+        @line_item.destroy
+      end
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to store_index_url }
+        format.json { head :no_content }
+      end
+    end
+  </pre>
+      <hr>
+      <p>
+        O arquivo <strong>destroy.turbo_stream.erb</strong> é utilizado para atualizar a interface do usuário de forma dinâmica. Quando um item é completamente removido do carrinho, a partial `_cart` é
+        renderizada novamente, mostrando a lista atualizada de itens no carrinho. Caso apenas a quantidade seja reduzida, o carrinho é atualizado com a nova quantidade do item. Em ambos os casos, mensagens informativas são exibidas para o usuário,
+        detalhando a ação realizada.
+      </p>
+
+  <pre>
+    # views/line_items/destroy.turbo_stream.erb
+    <% if @line_item.destroyed? %>
+      <%= turbo_stream.replace 'cart', partial: 'layouts/cart', locals: { cart: @cart } %>
+      <%= turbo_stream.replace 'notice', partial: 'store/notice', locals: { notice: "The '#{@line_item.product.title}' was successfully destroyed." } %>
+    <% else %>
+      <%= turbo_stream.update 'cart', partial: 'layouts/cart', locals: { cart: @cart } %>
+      <%= turbo_stream.replace 'notice', partial: 'store/notice', locals: { notice: "Only one '#{@line_item.product.title}' was successfully destroyed." } %>
+    <% end %>
+  </pre>
+
+    <hr>
+    <p>
+      O arquivo <strong>_cart.html.erb</strong>, localizado em <strong>views/layouts</strong>, define a exibição do carrinho na interface principal. Ele verifica se o carrinho contém itens para determinar
+      se o conteúdo deve ser renderizado ou se um contêiner vazio deve ser exibido. Essa abordagem garante que a interface permaneça consistente, independentemente do estado atual do carrinho.
+    </p>
+
+  <pre>
+    # views/layouts/_cart.html.erb
+    <% if cart and not cart.line_items.empty? %>
+      &lt;div id="cart" class="bg-white rounded p-2"&gt;
+        &lt;%= render @cart %>
+      &lt;/div&gt;
+    <% else %>
+      &lt;div id="cart"&gt;&lt;/div&gt;
+    <% end %>
+  </pre>
+
+    <hr>
+    <p>
+      O arquivo <strong>_cart.html.erb</strong>, localizado em <strong>views/carts</strong>, define a estrutura detalhada do carrinho. Ele inclui a lista de itens adicionados,
+      o total do carrinho e botões para esvaziar o carrinho ou finalizar a compra. Esses elementos permitem uma interação completa e intuitiva para o usuário.
+    </p>
+
+  <pre>
+    # views/carts/_cart.html.erb
+    &lt;div id="<%= dom_id cart %>"&gt;
+      &lt;h2 class="font-bold text-lg mb-3"&gt;
+        <%= t('.title') %>
+      &lt;/h2&gt;
+
+      &lt;table class="table-auto"&gt;
+      <%= render cart.line_items %>
+
+        &lt;tfoot&gt;
+          &lt;tr&gt;
+            &lt;th class="text-right pr-2 pt-2" colspan="3"&gt;Total:&lt;/th&gt;
+            &lt;td class="text-right pt-2 font-bold border-t-2 border-black"&gt;
+              <%= number_to_currency(cart.total_price) %>
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tfoot&gt;
+      &lt;/table&gt;
+
+      &lt;div class="flex mt-1"&gt;
+        <%= button_to t('.empty'), cart, method: :delete, class: 'ml-4 rounded-lg py-1 px-2 text-white bg-green-600' %>
+
+        <% if @order.nil? %>
+          <%= button_to t('.checkout'), new_order_path(locale: I18n.locale), method: :get, class: 'ml-4 rounded-lg py-1 px-2 text-black bg-green-200' %>
+        <% else %>
+        <% end %>
+      &lt;/div&gt;
+    &lt;/div&gt;
+  </pre>
+
+      <hr>
+      <p>
+        O arquivo <strong>_line_item.html.erb</strong> define como cada item individual no carrinho é exibido. Ele mostra detalhes como quantidade, título do produto,
+        preço total e um botão para remover o item. Esse layout dinâmico garante que os usuários possam interagir facilmente com os produtos do carrinho.
+      </p>
+
+  <pre>
+    # views/line_items/_line_item.html.erb
+    &lt;div id="<%= dom_id line_item %>"&gt;
+      <% if line_item == @current_item %>
+        &lt;tr class="line-item-highlight"&gt;
+      <% else %>
+        &lt;tr&gt;
+      <% end %>
+        &lt;td class="text-right"><%= line_item.quantity %></td&gt;
+        &lt;td>&times;&lt;/td&gt;
+        &lt;td class="pr-2">
+          <%= line_item.product.title %>
+        &lt;/td&gt;
+        &lt;td class="text-right font-bold"&gt;
+          <%= number_to_currency(line_item.total_price) %>
+        &lt;/td&gt;
+        &lt;td&gt;
+          <%= button_to 'destroy', line_item, method: :delete, class: 'rounded-lg py-1 px-2 text-white bg-green-600' %>
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/div&gt;
+  </pre>
+
+      <h4>Resultado</h4>
+      <video controls width="100%">
+        <source src="/assets/depot/media/challenge2.webm" type="video/webm"/>
+      </video>
+
+      <h4>Funcionamento geral da funcionalidade</h4>
+      <p>
+        O método destroy no controlador line_items_controller é responsável por manipular a remoção de um item do carrinho ou por reduzir a quantidade de um produto, respondendo com Turbo Stream, HTML ou JSON. Quando um item é removido ou sua
+        quantidade reduzida, as views são atualizadas dinamicamente. A view destroy.turbo_stream.erb atualiza a interface do carrinho e exibe uma mensagem, enquanto a partial _cart.html.erb re-renderiza o conteúdo do carrinho, incluindo os itens
+        atualizados. A partial _line_item.html.erb exibe cada item individual no carrinho, e ao ser acionada, interage com o controlador para refletir as mudanças na UI.
+        O Turbo Stream permite que essas atualizações aconteçam sem recarregar a página.
+        O uso do Turbo Stream permite atualizar a interface de forma dinâmica, sem a necessidade de recarregar a página inteira. Isso significa que, após a remoção ou decremento de um item, apenas a parte da página que precisa ser alterada
+        (o carrinho, no caso) será atualizada. Além disso, é exibida uma mensagem informando ao usuário o que ocorreu: se o item foi removido completamente ou se a quantidade foi diminuída.
+      </p>
+    </li>
+  </ul>
+</div>
+
+<div>
+  <h3>Conclusão</h3>
+  <p>
+    Este foi, sem dúvidas, o projeto mais longo e desafiador que já desenvolvi, mas também o mais enriquecedor em termos de aprendizado e crescimento profissional. Ao longo do processo, pude consolidar conceitos fundamentais do
+    <strong>Ruby on Rails</strong>, explorar ferramentas modernas e aprimorar minhas habilidades em desenvolvimento web. O fato de seguir uma versão totalmente em inglês também proporcionou um aprimoramento no meu domínio do idioma,
+    agregando mais valor à experiência.
+  </p>
+
+  <p>
+    O projeto me apresentou a cenários reais, como o uso de bancos de dados distintos para desenvolvimento e produção, integração de funcionalidades em tempo real com <strong>Action Cable</strong>
+    e dinamismo nos formulários com <strong>Stimulus</strong>. Além disso, foi uma oportunidade para experimentar o <strong>Docker</strong> no deploy, o que expande minha visão sobre a gestão de ambientes em produção.
+    Cada desafio enfrentado e superado ao longo dessa jornada foi extremamente divertido, fornecendo uma base sólida e prática para continuar evoluindo como desenvolvedor.
+  </p>
+</div>
