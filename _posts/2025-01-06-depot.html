@@ -161,23 +161,25 @@ categories: tutorial
         Essa lógica garante que o estado do carrinho seja sempre atualizado corretamente, tanto para decrementos quanto para exclusões completas. O método também utiliza Turbo Stream para atualização dinâmica, além de suportar redirecionamentos em HTML e
         respostas em JSON para maior flexibilidade.
       </p>
-  <pre>
-    # controllers/line_items_controller.rb
 
-    def destroy
-      if @line_item.quantity > 1
-        @line_item.update(quantity: @line_item.quantity - 1)
-      else
-        @line_item.destroy
-      end
+{% highlight ruby %}
+  # controllers/line_items_controller.rb
 
-      respond_to do |format|
-        format.turbo_stream
-        format.html { redirect_to store_index_url }
-        format.json { head :no_content }
-      end
+  def destroy
+    if @line_item.quantity > 1
+      @line_item.update(quantity: @line_item.quantity - 1)
+    else
+      @line_item.destroy
     end
-  </pre>
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to store_index_url }
+      format.json { head :no_content }
+    end
+  end
+{% endhighlight %}
+
       <hr>
       <p>
         O arquivo <strong>destroy.turbo_stream.erb</strong> é utilizado para atualizar a interface do usuário de forma dinâmica. Quando um item é completamente removido do carrinho, a partial `_cart` é

@@ -64,11 +64,11 @@ categories: tutorial
 </p>
 
 <h4>Controller articles</h4>
-<pre>
+{% highlight ruby %}
   def index
    @articles = Article.all
   end
-</pre>
+{% endhighlight %}
 
 <h4>View 'index.html.erb'</h4>
 <pre>
@@ -98,11 +98,11 @@ categories: tutorial
 </p>
 
 <h4>Controller articles</h4>
-<pre>
+{% highlight ruby %}
   def show
    @article = Article.find(params[:id])
   end
-</pre>
+{% endhighlight %}
 
 <h4>Refatoração e parciais</h4>
 <p>
