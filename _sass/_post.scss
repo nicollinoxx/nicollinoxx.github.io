@@ -1,0 +1,224 @@
+/* Light theme (padrão) */
+.post-header {
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 1.5rem;
+}
+
+.post-title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 0.75rem 0;
+  color: #1a1a1a;
+}
+
+.post-meta {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+.post-content {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+.post-content h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 2.5rem 0 1rem 0;
+  color: #1a1a1a;
+}
+
+.post-content h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 2rem 0 0.75rem 0;
+  color: #1a1a1a;
+}
+
+.post-content p {
+  margin: 0 0 1.25rem 0;
+}
+
+.post-content a {
+  color: #0066cc;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.post-content a:hover {
+  border-bottom-color: #0066cc;
+}
+
+.post-content ul,
+.post-content ol {
+  margin: 0 0 1.25rem 0;
+  padding-left: 1.75rem;
+}
+
+.post-content li {
+  margin-bottom: 0.5rem;
+}
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 2rem auto;
+  border-radius: 4px;
+}
+
+.post-content video {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 2rem auto;
+  border-radius: 4px;
+  background: #000;
+}
+
+.post-content iframe {
+  max-width: 100%;
+  display: block;
+  margin: 2rem auto;
+  border-radius: 4px;
+}
+
+/* Container responsivo para vídeos embed (YouTube, Vimeo, etc) */
+.post-content .video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* Aspect ratio 16:9 */
+  height: 0;
+  overflow: hidden;
+  margin: 2rem 0;
+  border-radius: 4px;
+}
+
+.post-content .video-container iframe,
+.post-content .video-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.post-content blockquote {
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+  border-left: 3px solid #0066cc;
+  color: #555;
+  font-style: italic;
+}
+
+/* Inline code */
+.post-content code {
+  background: #f8f9fa;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+  color: #c7254e;
+  border: 1px solid #e8e8e8;
+}
+
+/* Code blocks */
+.post-content pre {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 1rem 0;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.post-content pre code {
+  background: none;
+  padding: 0;
+  color: #2d3748;
+  border: none;
+  font-size: 0.95em;
+  line-height: 1.6;
+}
+
+/* Syntax highlighting para Ruby/ERB */
+.post-content pre code .keyword { color: #d73a49; font-weight: 600; }
+.post-content pre code .string { color: #22863a; }
+.post-content pre code .comment { color: #6a737d; font-style: italic; }
+.post-content pre code .function { color: #6f42c1; }
+.post-content pre code .variable { color: #e36209; }
+
+/* Dark theme */
+[data-bs-theme="dark"] .post-header {
+  border-bottom-color: #404040;
+}
+
+[data-bs-theme="dark"] .post-title {
+  color: #f0f0f0;
+}
+
+[data-bs-theme="dark"] .post-meta {
+  color: #aaa;
+}
+
+[data-bs-theme="dark"] .post-content {
+  color: #d0d0d0;
+}
+
+[data-bs-theme="dark"] .post-content h2,
+[data-bs-theme="dark"] .post-content h3 {
+  color: #f0f0f0;
+}
+
+[data-bs-theme="dark"] .post-content a {
+  color: #5ba3ff;
+}
+
+[data-bs-theme="dark"] .post-content a:hover {
+  border-bottom-color: #5ba3ff;
+}
+
+[data-bs-theme="dark"] .post-content blockquote {
+  border-left-color: #5ba3ff;
+  color: #bbb;
+}
+
+/* Dark theme - Code styling */
+[data-bs-theme="dark"] .post-content code {
+  background: #1e1e1e;
+  color: #ff6b9d;
+  border-color: #3a3a3a;
+}
+
+[data-bs-theme="dark"] .post-content pre {
+  background: #1e1e1e;
+  border-color: #3a3a3a;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+[data-bs-theme="dark"] .post-content pre code {
+  color: #e6e6e6;
+}
+
+[data-bs-theme="dark"] .post-content pre code .keyword { color: #ff7b72; }
+[data-bs-theme="dark"] .post-content pre code .string { color: #a5d6ff; }
+[data-bs-theme="dark"] .post-content pre code .comment { color: #8b949e; }
+[data-bs-theme="dark"] .post-content pre code .function { color: #d2a8ff; }
+[data-bs-theme="dark"] .post-content pre code .variable { color: #ffa657; }
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .post-title {
+    font-size: 1.6rem;
+  }
+
+  .post-content {
+    font-size: 1rem;
+  }
+}

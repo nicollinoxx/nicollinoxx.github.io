@@ -2,31 +2,30 @@
 layout: default
 ---
 
-<div class="home">
-  {%- if page.title -%}
-    <h1 class="page-heading">{{ page.title }}</h1>
-  {%- endif -%}
+{%- if page.title -%}
+  <h1 class="mb-4">{{ page.title }}</h1>
+{%- endif -%}
 
-  {{ content }}
+{{ content }}
 
-  {%- if site.posts.size > 0 -%}
-    <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
-    <ul class="post-list">
-      {%- for post in site.posts -%}
-      <li>
-        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        <span class="post-meta">{{ post.date | date: date_format }}</span>
-        <h3>
-          <a class="post-link" href="{{ post.url | relative_url }}">
-            {{ post.title | escape }}
-          </a>
-        </h3>
-        {%- if site.show_excerpts -%}
-          {{ post.excerpt }}
-        {%- endif -%}
-      </li>
-      {%- endfor -%}
-    </ul>
-  {%- endif -%}
-
-</div>
+{%- if site.posts.size > 0 -%}
+  <h2 class="mb-3">{{ page.list_title | default: "Posts" }}</h2>
+  <div class="row g-4">
+    {%- for post in site.posts -%}
+    <div class="col-12 col-md-6">
+      <a href="{{ post.url | relative_url }}" class="text-decoration-none">
+        <div class="border rounded shadow-sm px-3 py-2 h-100 card-hover">
+          {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+          <small class="text-muted fw-bolder">
+            <i class="bi bi-calendar-event me-2"></i>{{ post.date | date: date_format }}
+          </small>
+          <h5 class="mt-3">{{ post.title | escape }}</h5>
+          {%- if site.show_excerpts -%}
+            <p class="mb-0 mt-2 text-muted">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+          {%- endif -%}
+        </div>
+      </a>
+    </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
