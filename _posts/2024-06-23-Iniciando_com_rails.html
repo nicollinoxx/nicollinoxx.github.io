@@ -64,20 +64,20 @@ categories: tutorial
 </p>
 
 <h4>Controller articles</h4>
-{% highlight ruby %}
-  def index
-   @articles = Article.all
-  end
-{% endhighlight %}
+<pre><code class="language-ruby">
+def index
+  @articles = Article.all
+end
+</code></pre>
 
 <h4>View 'index.html.erb'</h4>
-<pre>
-  <% @articles.each do |article| %>
-    <%= link_to article.title, article %>
-  <% end %>
+<pre><code class="language-erb">
+<% @articles.each do |article| %>
+  <%= link_to article.title, article %>
+<% end %>
 
-  <%= link_to "New Article", new_article_path, class: 'btn btn-primary mt-2' %>
-</pre>
+<%= link_to "New Article", new_article_path, class: 'btn btn-primary mt-2' %>
+</code></pre>
 
 <h2>Tela de um post e comentario do blog</h2>
 <p>
@@ -98,11 +98,11 @@ categories: tutorial
 </p>
 
 <h4>Controller articles</h4>
-{% highlight ruby %}
-  def show
-   @article = Article.find(params[:id])
-  end
-{% endhighlight %}
+<pre><code class="language-ruby">
+def show
+  @article = Article.find(params[:id])
+end
+</code></pre>
 
 <h4>Refatoração e parciais</h4>
 <p>
@@ -112,24 +112,24 @@ categories: tutorial
 </p>
 
 <h4>Partial _article.html.erb</h4>
-<pre>
-  <%= @article.title %>
-  <%= @article.body %>
-</pre>
+<pre><code class="language-erb">
+<%= @article.title %>
+<%= @article.body %>
+</code></pre>
 
 <h4>View show.html.erb</h4>
-<pre>
-  <%= render @article %> #chama a partial '_article.html.erb'
+<pre><code class="language-erb">
+<%= render @article %> #chama a partial '_article.html.erb'
 
-  <%= link_to "Edit", edit_article_path(@article) %>
-  <%= link_to "Destroy", article_path(@article), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+<%= link_to "Edit", edit_article_path(@article) %>
+<%= link_to "Destroy", article_path(@article), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
 
-  Comments
-    <%= render @article.comments %> #chama a partial _comment.html.erb
+Comments
+<%= render @article.comments %> #chama a partial _comment.html.erb
 
-  Add a comment:
-    <%= render 'comments/form' %> #chama a partial _form.html.erb
-</pre>
+Add a comment:
+<%= render 'comments/form' %> #chama a partial _form.html.erb
+</code></pre>
 
 <hr>
 

@@ -102,25 +102,26 @@ categories: tutorial
       <p>
         Consultando informações do banco de dados atraves do cmd executando <strong>"rails dbconsole"</strong>. esse comando permite comunicar com banco de dados da aplicação diretamente do cmd.
       </p>
-  <pre>
-    <strong>n-colas@n-colas-VirtualBox:~/Development/Learning-storage$ </strong>rails dbconsole
-    SQLite version 3.45.1 2024-01-30 16:01:20
-    Enter ".help" for usage hints.
-    sqlite> .mode line
-    sqlite> SELECT id, title, price FROM products;
-       id = 1
-    title = Docker for Rails Developers
-    price = 19.95
 
-       id = 2
-    title = Design and Build Great Web APIs
-    price = 24.95
+      <pre><code class="language-ruby">
+<strong>n-colas@n-colas-VirtualBox:~/Development/Learning-storage$ </strong>rails dbconsole
+SQLite version 3.45.1 2024-01-30 16:01:20
+Enter ".help" for usage hints.
+sqlite> .mode line
+sqlite> SELECT id, title, price FROM products;
+  id = 1
+title = Docker for Rails Developers
+price = 19.95
 
-       id = 3
-    title = Modern CSS with Tailwind
-    price = 18.95
-    sqlite>
-  </pre>
+  id = 2
+title = Design and Build Great Web APIs
+price = 24.95
+
+  id = 3
+title = Modern CSS with Tailwind
+price = 18.95
+sqlite>
+      </code></pre>
 
       <p>
         Ao executar o comando SQL <strong>SELECT id, title, price FROM products;</strong> no terminal, é possível obter os dados de três atributos específicos da tabela de produtos cadastrados na loja: o identificador (id),
@@ -162,23 +163,23 @@ categories: tutorial
         respostas em JSON para maior flexibilidade.
       </p>
 
-{% highlight ruby %}
-  # controllers/line_items_controller.rb
+      <pre><code class="language-ruby">
+# controllers/line_items_controller.rb
 
-  def destroy
-    if @line_item.quantity > 1
-      @line_item.update(quantity: @line_item.quantity - 1)
-    else
-      @line_item.destroy
-    end
-
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to store_index_url }
-      format.json { head :no_content }
-    end
+def destroy
+  if @line_item.quantity > 1
+    @line_item.update(quantity: @line_item.quantity - 1)
+  else
+    @line_item.destroy
   end
-{% endhighlight %}
+
+  respond_to do |format|
+    format.turbo_stream
+    format.html { redirect_to store_index_url }
+    format.json { head :no_content }
+  end
+end
+      </code></pre>
 
       <hr>
       <p>
@@ -187,16 +188,16 @@ categories: tutorial
         detalhando a ação realizada.
       </p>
 
-  <pre>
-    # views/line_items/destroy.turbo_stream.erb
-    <% if @line_item.destroyed? %>
-      <%= turbo_stream.replace 'cart', partial: 'layouts/cart', locals: { cart: @cart } %>
-      <%= turbo_stream.replace 'notice', partial: 'store/notice', locals: { notice: "The '#{@line_item.product.title}' was successfully destroyed." } %>
-    <% else %>
-      <%= turbo_stream.update 'cart', partial: 'layouts/cart', locals: { cart: @cart } %>
-      <%= turbo_stream.replace 'notice', partial: 'store/notice', locals: { notice: "Only one '#{@line_item.product.title}' was successfully destroyed." } %>
-    <% end %>
-  </pre>
+  <pre><code class="language-erb">
+# views/line_items/destroy.turbo_stream.erb
+<% if @line_item.destroyed? %>
+  <%= turbo_stream.replace 'cart', partial: 'layouts/cart', locals: { cart: @cart } %>
+  <%= turbo_stream.replace 'notice', partial: 'store/notice', locals: { notice: "The '#{@line_item.product.title}' was successfully destroyed." } %>
+<% else %>
+  <%= turbo_stream.update 'cart', partial: 'layouts/cart', locals: { cart: @cart } %>
+  <%= turbo_stream.replace 'notice', partial: 'store/notice', locals: { notice: "Only one '#{@line_item.product.title}' was successfully destroyed." } %>
+<% end %>
+  </code></pre>
 
     <hr>
     <p>
@@ -204,16 +205,16 @@ categories: tutorial
       se o conteúdo deve ser renderizado ou se um contêiner vazio deve ser exibido. Essa abordagem garante que a interface permaneça consistente, independentemente do estado atual do carrinho.
     </p>
 
-  <pre>
-    # views/layouts/_cart.html.erb
-    <% if cart and not cart.line_items.empty? %>
-      &lt;div id="cart" class="bg-white rounded p-2"&gt;
-        &lt;%= render @cart %>
-      &lt;/div&gt;
-    <% else %>
-      &lt;div id="cart"&gt;&lt;/div&gt;
-    <% end %>
-  </pre>
+    <pre><code class="language-erb">
+# views/layouts/_cart.html.erb
+<% if cart and not cart.line_items.empty? %>
+  &lt;div id="cart" class="bg-white rounded p-2"&gt;
+    &lt;%= render @cart %>
+  &lt;/div&gt;
+<% else %>
+  &lt;div id="cart"&gt;&lt;/div&gt;
+<% end %>
+    </code></pre>
 
     <hr>
     <p>
@@ -221,65 +222,65 @@ categories: tutorial
       o total do carrinho e botões para esvaziar o carrinho ou finalizar a compra. Esses elementos permitem uma interação completa e intuitiva para o usuário.
     </p>
 
-  <pre>
-    # views/carts/_cart.html.erb
-    &lt;div id="<%= dom_id cart %>"&gt;
-      &lt;h2 class="font-bold text-lg mb-3"&gt;
-        <%= t('.title') %>
-      &lt;/h2&gt;
+    <pre><code class="language-erb">
+# views/carts/_cart.html.erb
+&lt;div id="<%= dom_id cart %>"&gt;
+  &lt;h2 class="font-bold text-lg mb-3"&gt;
+    <%= t('.title') %>
+  &lt;/h2&gt;
 
-      &lt;table class="table-auto"&gt;
-      <%= render cart.line_items %>
+  &lt;table class="table-auto"&gt;
+  <%= render cart.line_items %>
 
-        &lt;tfoot&gt;
-          &lt;tr&gt;
-            &lt;th class="text-right pr-2 pt-2" colspan="3"&gt;Total:&lt;/th&gt;
-            &lt;td class="text-right pt-2 font-bold border-t-2 border-black"&gt;
-              <%= number_to_currency(cart.total_price) %>
-            &lt;/td&gt;
-          &lt;/tr&gt;
-        &lt;/tfoot&gt;
-      &lt;/table&gt;
-
-      &lt;div class="flex mt-1"&gt;
-        <%= button_to t('.empty'), cart, method: :delete, class: 'ml-4 rounded-lg py-1 px-2 text-white bg-green-600' %>
-
-        <% if @order.nil? %>
-          <%= button_to t('.checkout'), new_order_path(locale: I18n.locale), method: :get, class: 'ml-4 rounded-lg py-1 px-2 text-black bg-green-200' %>
-        <% else %>
-        <% end %>
-      &lt;/div&gt;
-    &lt;/div&gt;
-  </pre>
-
-      <hr>
-      <p>
-        O arquivo <strong>_line_item.html.erb</strong> define como cada item individual no carrinho é exibido. Ele mostra detalhes como quantidade, título do produto,
-        preço total e um botão para remover o item. Esse layout dinâmico garante que os usuários possam interagir facilmente com os produtos do carrinho.
-      </p>
-
-  <pre>
-    # views/line_items/_line_item.html.erb
-    &lt;div id="<%= dom_id line_item %>"&gt;
-      <% if line_item == @current_item %>
-        &lt;tr class="line-item-highlight"&gt;
-      <% else %>
-        &lt;tr&gt;
-      <% end %>
-        &lt;td class="text-right"><%= line_item.quantity %></td&gt;
-        &lt;td>&times;&lt;/td&gt;
-        &lt;td class="pr-2">
-          <%= line_item.product.title %>
-        &lt;/td&gt;
-        &lt;td class="text-right font-bold"&gt;
-          <%= number_to_currency(line_item.total_price) %>
-        &lt;/td&gt;
-        &lt;td&gt;
-          <%= button_to 'destroy', line_item, method: :delete, class: 'rounded-lg py-1 px-2 text-white bg-green-600' %>
+    &lt;tfoot&gt;
+      &lt;tr&gt;
+        &lt;th class="text-right pr-2 pt-2" colspan="3"&gt;Total:&lt;/th&gt;
+        &lt;td class="text-right pt-2 font-bold border-t-2 border-black"&gt;
+          <%= number_to_currency(cart.total_price) %>
         &lt;/td&gt;
       &lt;/tr&gt;
-    &lt;/div&gt;
-  </pre>
+    &lt;/tfoot&gt;
+  &lt;/table&gt;
+
+  &lt;div class="flex mt-1"&gt;
+    <%= button_to t('.empty'), cart, method: :delete, class: 'ml-4 rounded-lg py-1 px-2 text-white bg-green-600' %>
+
+    <% if @order.nil? %>
+      <%= button_to t('.checkout'), new_order_path(locale: I18n.locale), method: :get, class: 'ml-4 rounded-lg py-1 px-2 text-black bg-green-200' %>
+    <% else %>
+    <% end %>
+  &lt;/div&gt;
+&lt;/div&gt;
+    </code></pre>
+
+    <hr>
+    <p>
+      O arquivo <strong>_line_item.html.erb</strong> define como cada item individual no carrinho é exibido. Ele mostra detalhes como quantidade, título do produto,
+      preço total e um botão para remover o item. Esse layout dinâmico garante que os usuários possam interagir facilmente com os produtos do carrinho.
+    </p>
+
+  <pre><code class="language-erb">
+# views/line_items/_line_item.html.erb
+&lt;div id="<%= dom_id line_item %>"&gt;
+  <% if line_item == @current_item %>
+    &lt;tr class="line-item-highlight"&gt;
+  <% else %>
+    &lt;tr&gt;
+  <% end %>
+    &lt;td class="text-right"><%= line_item.quantity %></td&gt;
+    &lt;td>&times;&lt;/td&gt;
+    &lt;td class="pr-2">
+      <%= line_item.product.title %>
+    &lt;/td&gt;
+    &lt;td class="text-right font-bold"&gt;
+      <%= number_to_currency(line_item.total_price) %>
+    &lt;/td&gt;
+    &lt;td&gt;
+      <%= button_to 'destroy', line_item, method: :delete, class: 'rounded-lg py-1 px-2 text-white bg-green-600' %>
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/div&gt;
+  </code></pre>
 
       <h4>Resultado</h4>
       <video controls width="100%">
