@@ -1,0 +1,244 @@
+---
+layout: post
+title: 'Deploy Moderno de Rails no Oracle Cloud com Kamal'
+date: 2026-01-23 15:51:20 -0300
+categories: tutorial
+---
+
+<p>
+  Este tutorial é um guia rapido para implantação na Oracle Cloud Infrastructure (OCI) usando o Kamal, com automação, segurança e escalabilidade.
+  Este guia cobre desde a criação da instância até o deploy final, com dicas práticas e exemplos reais.
+</p>
+
+<p>
+  O deploy de aplicações modernas exige automação, segurança e flexibilidade. Neste tutorial,
+  você vai aprender como unir o poder do <strong>Oracle Cloud</strong> com a praticidade do <strong>Kamal</strong>
+  para entregar aplicações Rails em produção de forma eficiente e profissional.
+</p>
+
+<h2 class="mt-5">Pré-requisitos</h2>
+<ul>
+  <li>Conta ativa na Oracle Cloud Infrastructure (OCI)</li>
+  <li>Docker instalado localmente</li>
+  <li>Kamal instalado localmente <code class="p-1">gem install kamal</code></li>
+  <li>Aplicação Rails pronta para produção</li>
+</ul>
+<p>
+  Se ainda não possui uma conta, acesse o site da Oracle Cloud e siga o processo de cadastro. O Free Tier oferece recursos gratuitos para testes e aprendizado.
+</p>
+
+<h3>1. Criando sua instância na Oracle Cloud</h3>
+<p>
+  No painel da Oracle Cloud, navegue até <strong>Compute &gt; Instances</strong> e clique em <strong>Create Instance</strong>.
+  Escolha o sistema operacional (recomendo <strong>Ubuntu 24.04 Minimal</strong>), defina um nome para facilitar a identificação e siga as instruções para gerar e adicionar sua chave SSH.
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/build_virtual_machine_instance.png" alt="Oracle Cloud Dashboard" />
+
+<p>
+  Nessa etapa, você pode escolher o tipo de arquitetura (AMD ou Intel), o sistema operacional
+  e o tipo de máquina (virtual ou bare metal). Para a maioria dos projetos web, uma VM padrão já é suficiente.
+</p>
+<p>
+  Caso queira utilizar outro sistema operacional, clique em <strong>Change image</strong> para selecionar uma imagem diferente.
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/configuring_virtual_machine_image.png" alt="Configuração da imagem" />
+
+<p>
+  Recomendo utilizar o Ubuntu 24.04 Minimal, pois é leve, estável e ideal para servidores. Após selecionar, defina um nome para sua instância para facilitar a identificação no painel.
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/virtual_machine_image_name.png" alt="Nomeando instância" />
+
+<h3>1.1. Configurando rede</h3>
+<p>
+  Crie uma <strong>Virtual Cloud Network</strong> exclusiva para sua instância. Para ambientes de produção, restrinja o acesso apenas aos IPs necessários.
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/virtual_machine_primary_network.png" alt="Configuração de rede" />
+
+<p>
+  Dica: você pode personalizar as regras de firewall e sub-redes conforme a necessidade do seu projeto.
+  Para ambientes de produção, é fundamental revisar cuidadosamente as regras de segurança.
+</p>
+
+<h3>1.2. Gerando e adicionando a chave SSH</h3>
+
+<p>
+  Para acessar sua VM de forma segura, gere uma chave SSH no seu computador local:
+</p>
+<pre><code>ssh-keygen -t ed25519 -C "oracle-cloud"</code></pre>
+
+<p>
+  Pressione <strong>Enter</strong> para aceitar o local padrão e, se desejar, defina uma senha para a chave (ou deixe em branco).
+  Isso criará dois arquivos: uma chave privada (que fica no seu computador) e uma chave pública (que será cadastrada na Oracle Cloud).
+</p>
+
+<p>
+  Para copiar a chave pública, utilize:
+</p>
+<pre><code>cat ~/.ssh/id_ed25519.pub</code></pre>
+
+<p>
+  Exemplo de chave SSH:
+  <code class="p-1">ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFakeExampleKeyData1234567890 oracle-cloud</code>
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/oracle_cloud_ssh_key.png" alt="Campo para colar a chave pública na Oracle Cloud" />
+
+<p>
+  Cole a chave pública no campo indicado durante a criação da instância. Isso permitirá que
+  apenas quem possuir a chave privada tenha acesso ao servidor via SSH, aumentando a segurança.
+</p>
+
+<h3>1.3. Configurando o Boot Volume</h3>
+
+<p>
+  O Boot Volume é o disco principal da sua VM. Para este tutorial, mantenha as opções padrão, sem personalizar tamanho ou criptografia avançada.
+  Isso simplifica o processo e é suficiente para testes e projetos iniciais.
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/virtual_machine_boot_volume.png" alt="Configuração do Boot Volume" />
+
+<p>
+  Antes de finalizar, revise todas as configurações da instância. Se necessário, ajuste recursos como CPU, memória e armazenamento conforme a
+  demanda da sua aplicação e finalize a criação da sua maquina virtual.
+</p>
+
+<h3>2. Reservando o IP público</h3>
+
+<p>
+  <small class="text-warning">Utilize da barra de pesquisa para facilitar a localização das seções.</small><br>
+
+  Garanta que sua instância tenha um IP público. No menu de <strong>Networking</strong>, acesse <strong>IP Administration</strong> e
+  clique em <strong>Reserve IPv4 address</strong>. Marque as opções para reservar e associar o IP à sua VM.
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/access_virtual_machine.png" alt="Lista de instâncias" />
+
+<p>
+  No menu de <strong>Networking</strong>, clique na rede associada à sua VM.
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/access_virtual_machine_networking.png" alt="Seção de networking" />
+
+<p>
+  Em <strong>IP Administration</strong>, clique em <strong>Edit</strong> para garantir um endereço IP para sua instância.
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/edit_private_address_path.png" alt="Administração de IP" />
+
+<p>
+  Após reservar, edite o IP e marque as opções <strong>Reserved public IP</strong> e <strong>Create new Reserved IP Address</strong>. Assim, sua VM terá um IP público dedicado.
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/reserve_virtual_machine_public_id.png" alt="Editar endereço IP reservado" />
+
+<h3>2.1 Liberando portas</h3>
+
+<p>
+  Para que sua aplicação web seja acessível, é necessário liberar as portas 80 (HTTP) e 443 (HTTPS) no firewall da rede. No painel da Oracle Cloud, acesse <a href="https://cloud.oracle.com/networking" target="_blank">https://cloud.oracle.com/networking</a> ou pesquise por <strong>Virtual Cloud Networks</strong>.
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/virtual_machine_network.png" alt="Lista de Virtual Cloud Networks" />
+
+<p>
+  Clique na sua rede virtual e vá até <strong>Security Lists</strong>. Edite a lista padrão e adicione regras de entrada para as portas 80 e 443, permitindo tráfego de qualquer origem (0.0.0.0/0).
+</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/security_list.png" alt="Security Lists" />
+
+<p>Adicione as portas 80 e 443:</p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/add_ingress_rules.png" alt="Adicionando regra de entrada" />
+
+<p>
+  <strong>Dica:</strong> Em ambientes de produção, restrinja o acesso apenas aos IPs necessários para aumentar a segurança.<br>
+  <strong>Para acessar a máquina, execute:</strong> <code class="p-1">ssh ubuntu@ip_publico_da_sua_instancia</code>
+</p>
+
+<p class="alert alert-success mt-4">
+  Pronto! Sua instância está configurada para aceitar tráfego externo e pronta para receber o deploy da sua aplicação.
+</p>
+
+<h2>Fazendo o deploy de uma aplicação Rails com Kamal</h2>
+
+<p>
+  Com a instância configurada e acessível, você pode prosseguir para o deploy da sua aplicação Rails utilizando o Kamal. Certifique-se de que sua aplicação esteja pronta para produção e siga os passos abaixo.
+</p>
+
+<h3>1. Configurando o Kamal para deploy</h3>
+
+<p>
+  No diretório do seu projeto Rails, gere o arquivo de configuração do Kamal <code class="p-1">deploy.yml</code> e ajuste os parâmetros principais:
+</p>
+
+<pre><code class="bg-dark text-light p-3 rounded">
+service: minha_app
+image: minha_app
+
+servers:
+  web:
+    - IP_DA_SUA_INSTANCIA
+
+registry:
+  server: localhost:5555
+
+env:
+  secret:
+    - RAILS_MASTER_KEY
+  clear:
+    SOLID_QUEUE_IN_PUMA: true
+
+ssh:
+  user: ubuntu
+
+proxy:
+  ssl: false
+  host: IP_DA_SUA_INSTANCIA
+
+asset_path: /rails/public/assets
+builder:
+  arch: amd64
+</code></pre>
+
+<p>
+  <strong>Dica:</strong> Substitua <code class="p-1">IP_DA_SUA_INSTANCIA</code> pelo IP público reservado. Se usar domínio, ajuste o campo
+  <code class="p-1">host</code> e ative o <code class="p-1">ssl: true</code>.
+</p>
+
+<h3>1.2. Preparando o ambiente e executando o deploy</h3>
+
+<p>
+  Para executar o deploy, é necessário que o Docker esteja instalado na máquina virtual.
+  Caso prefira, você pode realizar a instalação do Docker manualmente via SSH.<br>
+  <a href="https://docs.docker.com/engine/install/ubuntu/" target="_blank">
+    Docker para Ubuntu
+  </a>.
+</p>
+
+<p>
+  Neste tutorial, seguiremos utilizando o Kamal para instalar o Docker automaticamente.
+  Independentemente do método escolhido (manual ou automático), será necessário adicionar o usuário
+  <strong>ubuntu</strong> ao grupo <strong>docker</strong> para permitir a execução dos comandos.
+</p>
+
+<p>
+  Execute o comando: <code class="p-1">kamal setup</code>.
+  Esse comando irá instalar o Docker, caso ele não exista, porém falhará inicialmente por erro de permissão,
+  pois o usuário <strong>ubuntu</strong> ainda não pertence ao grupo <strong>docker</strong>.
+  Para resolver isso, acesse a máquina virtual via SSH e execute: <code class="p-1">sudo usermod -aG docker ubuntu</code>.
+</p>
+
+<p>
+  Após concluir os passos acima, execute novamente: <code class="p-1">kamal setup</code> e depois: <code class="p-1">kamal deploy</code>.
+</p>
+
+<div class="alert alert-success">
+  Pronto! Sua aplicação Rails foi implantada e está acessível via Oracle Cloud Infrastructure.
+</div>
+
+<h2>Exemplos de aplicações em produção</h2>
+
+<ul>
+  <li>
+    <a href="https://fitplan.vip" target="_blank"><strong>FitPlan</strong></a><br>
+    Plataforma de planos de treino e dietas personalizados, utilizada como base para este tutorial.
+  </li>
+  <li>
+    <a href="https://boardgame.fitplan.vip" target="_blank"><strong>Boardgame Explorer</strong></a><br>
+    Projeto de de mostração para a gem <strong>bgg_remote</strong>, integrando facilmente com a API do BoardGameGeek.
+  </li>
+</ul>
+
+<div class="alert alert-info">
+  <strong>Dica extra:</strong> Para personalizar ainda mais seu ambiente, explore recursos como balanceamento de carga, backups automáticos e monitoramento nativo da Oracle Cloud.
+</div>
