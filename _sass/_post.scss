@@ -119,38 +119,39 @@
 /* Inline code */
 .post-content code {
   background: #f8f9fa;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.9em;
-  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
   color: #c7254e;
+  font-family: 'Monaco','Menlo','Consolas',monospace;
+  border-radius: 6px;
   border: 1px solid #e8e8e8;
+  margin: 0 !important;
+  line-height: 1.1;
+  display: inline;
 }
 
 /* Code blocks */
 .post-content pre {
   background: #f8f9fa;
-  padding: 1rem;
   border-radius: 6px;
-  overflow-x: auto;
-  margin: 1rem 0;
   border: 1px solid #e8e8e8;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  overflow-x: auto;
+  box-shadow: none;
+  line-height: 1.2;
 }
 
 .post-content pre code {
   background: none;
-  padding: 0;
-  color: #2d3748;
   border: none;
-  font-size: 0.95em;
-  line-height: 1.6;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  line-height: inherit;
+  color: #2d3748;
+  display: block;
 }
 
-/* Syntax highlighting para Ruby/ERB */
-.post-content pre code .keyword { color: #d73a49; font-weight: 600; }
-.post-content pre code .string { color: #22863a; }
-.post-content pre code .comment { color: #6a737d; font-style: italic; }
+/* Syntax highlighting for Ruby/ERB */
+.post-content pre code .keyword  { color: #d73a49; font-weight: 600; }
+.post-content pre code .string   { color: #22863a; }
+.post-content pre code .comment  { color: #6a737d; font-style: italic; }
 .post-content pre code .function { color: #6f42c1; }
 .post-content pre code .variable { color: #e36209; }
 
