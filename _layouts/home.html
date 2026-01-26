@@ -15,8 +15,10 @@ layout: default
 
   <h2 class="mb-3">{{ page.list_title | default: "Posts" }}</h2>
 
-  {%- comment -%} Ordena posts: pinned primeiro {%- endcomment -%}
-  {%- assign sorted_posts = site.posts | sort: "pinned" | reverse -%}
+  {%- comment -%} Ordena posts: pinned primeiro e todos por data desc {%- endcomment -%}
+  {%- assign pinned_posts = site.posts | where: "pinned", true | sort: "date" | reverse -%}
+  {%- assign unpinned_posts = site.posts | where_exp: "post", "post.pinned != true" | sort: "date" | reverse -%}
+  {%- assign sorted_posts = pinned_posts | concat: unpinned_posts -%}
 
   <div class="row g-4">
     {%- for post in sorted_posts -%}
