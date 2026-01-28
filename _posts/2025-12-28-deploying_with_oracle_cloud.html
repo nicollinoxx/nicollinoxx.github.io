@@ -73,12 +73,12 @@ pinned: true
   Exemplo de chave SSH:
   <code class="p-1">ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFakeExampleKeyData1234567890 oracle-cloud</code>
 </p>
-<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/oracle_cloud_ssh_key.png" alt="Campo para colar a chave pública na Oracle Cloud" />
 
 <p>
   Ainda na etapa <strong>Networking</strong>, Cole a chave pública no campo indicado durante a criação da instância. Isso permitirá que
   apenas quem possuir a chave privada tenha acesso ao servidor via SSH, aumentando a segurança.
 </p>
+<img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/oracle_cloud_ssh_key.png" alt="Campo para colar a chave pública na Oracle Cloud" />
 
 <h3>1.3. Configurando o Boot Volume</h3>
 
@@ -96,8 +96,8 @@ pinned: true
 <h3>2. Reservando o IP público</h3>
 
 <p>
-  Garanta que sua instância tenha um IP público. No menu de <strong>Networking</strong>, acesse <strong>IP Administration</strong> e
-  clique em <strong>Edit</strong>. Marque as opções para reservar e associar o IP à sua VM.
+  Garanta que sua instância possua um IP público. Para isso, acesse sua instância e, no menu <strong>Networking</strong>,
+  selecione <strong>IP Administration</strong>. Em seguida, clique em <strong>Edit</strong> e marque as opções para reservar e associar o IP à sua VM.
 </p>
 <img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/access_virtual_machine.png" alt="Lista de instâncias" />
 
@@ -128,7 +128,7 @@ pinned: true
 </p>
 <img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/security_list.png" alt="Security Lists" />
 
-<p>Adicione as portas 80 e 443:</p>
+<p>Acesse a aba <strong>Security Rules</strong> e adicione as portas 80 e 443:</p>
 <img class="img-fluid rounded shadow mb-3" src="/attachments/deploying_with_oracle_cloud/add_ingress_rules.png" alt="Adicionando regra de entrada" />
 
 <p>
@@ -145,7 +145,34 @@ pinned: true
   Com a instância configurada e acessível, você pode prosseguir para o deploy da sua aplicação Rails utilizando o Kamal. Certifique-se de que sua aplicação esteja pronta para produção e siga os passos abaixo.
 </p>
 
-<h3>1. Configurando o Kamal para deploy</h3>
+<h3>1. Preparando o ambiente</h3>
+
+<p>
+  Para executar o deploy, é necessário que o Docker esteja instalado na máquina virtual.
+  Como não temos acesso ao usuário root na Oracle Cloud, será necessário fazer o ajuste manual do servidor antes de usar o Kamal.
+</p>
+
+<p>
+  Execute os seguintes comandos via SSH na máquina virtual:
+</p>
+
+<pre><code>sudo apt update
+sudo apt upgrade -y
+sudo apt install -y docker.io curl git
+sudo usermod -a -G docker ubuntu
+</code></pre>
+
+<p>
+  Esses comandos irão atualizar o sistema, instalar o Docker, curl e git, além de adicionar o usuário ubuntu ao grupo docker
+  para permitir a execução dos comandos.
+</p>
+
+<p>
+  Com o Docker instalado e o usuário ubuntu adicionado ao grupo docker, você terá todas as dependências necessárias
+  configuradas para executar o deploy da sua aplicação Rails.
+</p>
+
+<h3>1.2. Configurando o Kamal e executando deploy</h3>
 
 <p>
   No diretório do seu projeto Rails, gere o arquivo de configuração do Kamal <code class="p-1">deploy.yml</code> e ajuste os parâmetros principais:
@@ -183,35 +210,9 @@ builder:
   <code class="p-1">host</code> e ative o <code class="p-1">ssl: true</code>.
 </p>
 
-<h3>1.2. Preparando o ambiente e executando o deploy</h3>
-
 <p>
-  Para executar o deploy, é necessário que o Docker esteja instalado na máquina virtual.
-  Como não temos acesso ao usuário root na Oracle Cloud, será necessário fazer o ajuste manual do servidor antes de usar o Kamal.
-</p>
-
-<p>
-  Execute os seguintes comandos via SSH na máquina virtual:
-</p>
-
-<pre><code>sudo apt update
-sudo apt upgrade -y
-sudo apt install -y docker.io curl git
-sudo usermod -a -G docker ubuntu
-</code></pre>
-
-<p>
-  Esses comandos irão atualizar o sistema, instalar o Docker, curl e git, além de adicionar o usuário ubuntu ao grupo docker
-  para permitir a execução dos comandos.
-</p>
-
-<p>
-  Com o Docker instalado e o usuário ubuntu adicionado ao grupo docker, você terá todas as dependências necessárias
-  configuradas para executar o deploy da sua aplicação Rails.
-</p>
-
-<p>
-  Execute o comando para fazer o deploy: <code class="px-2 py-1">kamal deploy</code>
+  Com tudo configurado, execute o comando abaixo para iniciar o deploy.<br>
+  <code class="px-2 py-1">kamal deploy</code>
 </p>
 
 <div class="alert alert-success">
@@ -229,7 +230,8 @@ sudo usermod -a -G docker ubuntu
     <a href="https://boardgame.fitplan.vip" target="_blank"><strong>Boardgame Explorer</strong></a><br>
     <ul>
       <li>
-        Projeto de mostração para a gem <strong>bgg_remote</strong>, integrando facilmente com a API do BoardGameGeek.
+        Projeto de mostração para a gem <a href="https://rubygems.org/gems/bgg_remote" target="_blank">bgg_remote</a>,
+        integrando facilmente com a API do BoardGameGeek.
       </li>
       <li>
         github: <a href="https://github.com/nicollinoxx/boardgame_explorer" target="_blank">boardgame_explorer</a>
