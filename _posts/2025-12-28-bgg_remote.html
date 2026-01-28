@@ -1,0 +1,695 @@
+---
+layout: post
+title: 'Bgg_remote "ruby gem"'
+date: 2025-01-06 18:19:20 -0300
+categories: tutorial
+---
+
+<p>
+  Bgg_remote é uma gem ruby com o proposito de facilitar a comunição com os endpoints do BoardgameGeek,
+  expondo metodos para comunicar com os canais disponiveis pelo boardgameGeek.
+  Neste post descrevo a motivação, desenvolvimento e resultados.
+</p>
+
+
+
+<div>
+  <h2><i class="text-warning bi bi-lightbulb"></i> Motivação</h2>
+  <p>
+    Em novembro, o BoardGameGeek passou a exigir o uso de tokens para acessar seus endpoints.
+    Essa mudança causou inconsistências no sistema onde atuo como estagiário, já que todas as requisições começaram a retornar acesso não autorizado.
+  </p>
+
+  <p>
+    A aplicação utilizava a gem <strong>Bgg</strong>, uma biblioteca antiga que não estava preparada para essa nova exigência da API.
+    Para manter o funcionamento do sistema de forma estável e rápida, desenvolvi inicialmente um <em>service object</em> com apenas o necessário para lidar com os endpoints atualizados.
+  </p>
+
+  <p>
+    Ao buscar alternativas, percebi que as gems existentes eram, em sua maioria, desatualizadas — muitas não recebiam manutenção desde 2020.
+    Foi então que surgiu a ideia de criar uma nova gem: a <strong>bgg_remote</strong>, com foco em compatibilidade com a API atual, simplicidade e aprendizado, além de contribuir com a comunidade Ruby.
+  </p>
+</div>
+
+<h2>
+  <i class="text-primary bi bi-code-slash"></i> Desenvolvimento <br>
+  <span class="border border-danger rounded px-2 p-1 fs-6 mb-2"><i class="text-danger bi bi-gem"></i> Bgg_remote</span>
+</h2>
+
+
+<details>
+  <summary>Aspectos da gem</summary>
+
+  <ul>
+    <li>Facil utilização</li>
+    <li>Legibilidade clara</li>
+    <li>Mais interativo</li>
+  </ul>
+</details>
+
+<h3>Criando a gem</h3>
+
+<div class="fs-6 mb-2">
+  Comando utilizado para gerar a estrutura da gem
+  <code class="language-ruby">
+    bundle gem bgg_remote --test=minitest --mit
+  </code>
+</div>
+
+<p>
+  Agora vamos configurar o <strong>gemspec</strong>, o arquivo de configuração da gem:
+</p>
+
+<details class="mb-2">
+  <summary>gemspec inicial</summary>
+  <pre>
+    <code class="language-ruby">
+      # frozen_string_literal: true
+      require_relative "lib/bgg_remote/version"
+
+      Gem::Specification.new do |spec|
+        # --- Basic information about the gem ---
+        spec.name          = "bgg_remote"               # Name of the gem
+        spec.version       = BggRemote::VERSION        # Version of the gem (defined in lib/bgg_remote/version.rb)
+        spec.authors       = ["Your Name"]             # Your name or the gem authors
+        spec.email         = ["your-email@example.com"] # Author email
+        spec.summary       = "Short summary of the gem" # Short summary (required by RubyGems)
+        spec.description   = "Detailed description of the gem" # Longer description
+        spec.homepage      = "https://github.com/username/bgg_remote" # URL to the repository or website
+        spec.license       = "MIT"                     # License of the gem
+        spec.required_ruby_version = ">= 3.2.0"        # Minimum required Ruby version
+
+        # --- Additional metadata (used by RubyGems for links) ---
+        spec.metadata["homepage_uri"]    = spec.homepage
+        spec.metadata["source_code_uri"] = spec.homepage
+        spec.metadata["changelog_uri"]   = "#{spec.homepage}/blob/main/CHANGELOG.md"
+
+        # --- Files included in the gem ---
+        # This block adds all files tracked by git, excluding tests, binaries, and config files
+        gemspec = File.basename(__FILE__)
+        spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
+          ls.readlines("\x0", chomp: true).reject do |f|
+            f == gemspec || f.start_with?(*%w[bin/ Gemfile .gitignore test/ .github/])
+          end
+        end
+
+        # --- Directory where Ruby will look for files ---
+        spec.require_paths = ["lib"]
+
+        # --- Dependencies (uncomment if needed) ---
+        # spec.add_dependency "nokogiri", "~> 1.16"
+
+        # --- Executables (uncomment if your gem has CLI commands) ---
+        # spec.bindir = "exe"
+        # spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+      end
+    </code>
+  </pre>
+</details>
+
+<details class="mb-4">
+  <summary>gemspec configurado</summary>
+  <pre>
+    <code class="language-ruby">
+      # frozen_string_literal: true
+      require_relative "lib/bgg_remote/version"
+
+      Gem::Specification.new do |spec|
+        # --- Basic gem info ---
+        spec.name          = "bgg_remote"
+        spec.version       = BggRemote::VERSION
+        spec.authors       = ["Nícolas Amaral"]
+        spec.email         = ["nicolasalmeida321@gmail.com"]
+        spec.summary       = "Ruby client for the BoardGameGeek XML API2"
+        spec.description   = "A simple Ruby gem that provides a clean interface to consume the BoardGameGeek XML API2."
+        spec.homepage      = "https://github.com/nicollinoxx/bgg_remote"
+        spec.license       = "MIT"
+        spec.required_ruby_version = ">= 3.2.0"
+
+        # --- Metadata for RubyGems ---
+        spec.metadata["homepage_uri"]    = spec.homepage
+        spec.metadata["source_code_uri"] = spec.homepage
+        spec.metadata["changelog_uri"]   = "#{spec.homepage}/blob/main/CHANGELOG.md"
+
+        # --- Files included in the gem ---
+        gemspec = File.basename(__FILE__)
+        spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
+          ls.readlines("\x0", chomp: true).reject do |f|
+            f == gemspec || f.start_with?(*%w[bin/ Gemfile .gitignore test/ .github/])
+          end
+        end
+
+        spec.require_paths = ["lib"]
+
+        # --- Dependencies ---
+        spec.add_dependency "httparty", "0.23.2"
+
+        # --- Executables (if any) ---
+        # spec.bindir = "exe"
+        # spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+      end
+    </code>
+  </pre>
+</details>
+
+<h4>Construindo o client da gem</h4>
+
+<p>
+  Para iniciar, considerei implementar usando apenas <code>net/http</code>, mas percebi que outras gems já utilizavam <code>httparty</code> para lidar com requisições HTTP de forma mais simples e consistente. Por isso, adotei a mesma abordagem.<br>
+  Além disso, o BoardGameGeek trabalha apenas com requisições GET, o que simplifica o desenvolvimento. Também precisaremos lidar com conteúdo XML, que é o formato de resposta da API.
+</p>
+
+<p>
+  O <strong>Client</strong> funciona como intermediário: ele será responsável apenas por realizar as requisições. Posteriormente, outra entidade será criada para processar os dados retornados e direcioná-los ao destino correto.
+</p>
+
+<small class="bg-body-secondary px-2 py-1 rounded">
+  client.rb
+</small>
+
+<pre class="mt-2">
+  <code class="language-ruby">
+# Estrutura da gem:
+# bgg_remote/
+#   lib/bgg_remote/
+
+require "httparty"
+
+class BggRemote::Client
+  include HTTParty
+  attr_reader :token, :timeout
+
+  base_uri "https://boardgamegeek.com/xmlapi2"
+  format :xml
+
+  def initialize(token, timeout: 10)
+    @token   = token
+    @timeout = timeout
+  end
+
+  def perform_request(path, **params)
+    response = self.class.get("/#{path}", query: params.compact, headers: headers, timeout: timeout)
+    response.body
+  end
+
+  private
+
+  def headers
+    { "Accept" => "application/xml", "Authorization" => "Bearer #{token}" }
+  end
+end
+  </code>
+</pre>
+
+<p>
+<strong>Descrição do código:</strong><br>
+- <strong>HTTParty:</strong> facilita a comunicação HTTP e parsing de XML.<br>
+- <strong>base_uri:</strong> define a URL base da API, evitando repetições em cada requisição.<br>
+- <strong>initialize:</strong> recebe o token e o timeout da requisição.<br>
+- <strong>perform_request:</strong> método genérico que envia requisições GET para qualquer endpoint, aceitando parâmetros dinâmicos.<br>
+- <strong>headers:</strong> define os headers HTTP, incluindo Authorization.<br>
+- O client retorna apenas o corpo da resposta; o processamento dos dados será feito por outra entidade.
+</p>
+
+<ul>
+  <li>
+    <strong>Agora adaptar a classe principal para realizar os testes.</strong>
+    <p>
+      Nessa etapa optei por adotar a abordagem de configuration, pois a gem tera algumas funcionalidade opcionais, com essa abordagem os setters
+      ficam mais faceis de manipular ao instanciar a classe, mas ainda será possivel instancia as classes manualmente.
+    </p>
+
+    <small class="bg-body-secondary px-2 py-1 rounded">
+      bgg_remote.rb
+    </small>
+
+<pre class="mt-2">
+<code class="language-ruby">
+# Estrutura da gem:
+# bgg_remote/
+#   lib/
+
+# frozen_string_literal: true
+
+require_relative "bgg_remote/version"
+require_relative "bgg_remote/error"
+require_relative "bgg_remote/client"
+
+module BggRemote
+  Config = Struct.new(:token, :timeout, keyword_init: true)
+
+  class << self
+    attr_reader :client
+
+    def configure
+      config = Config.new(timeout: 10)
+      yield config if block_given?
+
+      @client = Client.new(config.token, timeout: config.timeout)
+    end
+  end
+end
+</code>
+</pre>
+
+  </li>
+
+  <li>
+    <strong>Aplicando Classes de erros para permitir retry mais faceis.</strong>
+    <p>criei a classe Error.rb responsavel por ser um ponto comum de mapeamento de errors.</p>
+
+    <small class="bg-body-secondary px-2 py-1 rounded">
+      error.rb
+    </small>
+
+<pre class="mt-2">
+<code class="language-ruby">
+# Estrutura da gem:
+# bgg_remote/
+#   lib/bgg_remote/
+
+module BggRemote
+  class Error < StandardError
+    class Unauthorized        < Error; end
+    class NotFound            < Error; end
+    class ServerError         < Error; end
+    class RateLimited         < Error; end
+    class BadRequest          < Error; end
+    class Forbidden           < Error; end
+    class UnprocessableEntity < Error; end
+    class MissingToken        < Error; end
+  end
+end
+</code>
+</pre>
+
+    <small class="bg-body-secondary px-2 py-1 rounded">
+      client.rb
+    </small>
+<pre class="mt-2">
+  <code class="language-ruby">
+# Estrutura da gem:
+# bgg_remote/
+#   lib/bgg_remote/
+
+require "httparty"
+
+class BggRemote::Client
+  include HTTParty
+  attr_reader :token, :timeout
+
+  base_uri "https://boardgamegeek.com/xmlapi2"
+  format :xml
+
+  STATUS_CODES = {
+    401 => BggRemote::Error::Unauthorized,
+    404 => BggRemote::Error::NotFound,
+    429 => BggRemote::Error::RateLimited,
+    500 => BggRemote::Error::ServerError,
+    400 => BggRemote::Error::BadRequest,
+    403 => BggRemote::Error::Forbidden,
+    422 => BggRemote::Error::UnprocessableEntity
+  }.freeze
+
+  def initialize(token, timeout: 10)
+    raise BggRemote::Error::MissingToken, "token is required" if token.nil?
+
+    @token   = token
+    @timeout = timeout
+  end
+
+  def perform_request(path, **params)
+    response = self.class.get("/#{path}", query: params.compact, headers: headers, timeout: timeout)
+
+    raise_error_for(response) unless response.success?
+    response.body
+  end
+
+  private
+
+  def headers
+    { "Accept" => "application/xml", "Authorization" => "Bearer #{token}" }
+  end
+
+  def raise_error_for(response)
+    error_class = STATUS_CODES.fetch(response.code)
+    raise error_class, "HTTP failed with code: #{response.code}, message #{response.message}"
+  end
+end
+  </code>
+</pre>
+
+  </li>
+
+
+</ul>
+
+<section>
+  <h4>Validando o client</h4>
+
+  <p>
+    Agora que o client foi estruturado para realizar requisições HTTP,
+    é necessário executar testes reais para validar seu comportamento
+    em diferentes cenários.
+  </p>
+
+  <details>
+    <summary>Testes de erro e chamada real à API</summary>
+
+    <article>
+      <h5>BggRemote::Error::MissingToken</h5>
+
+      <p>
+        Teste para garantir que a ausência de token gera a exceção esperada.
+      </p>
+
+      <pre><code class="language-ruby">
+      # bgg_remote/test.rb
+require_relative "./lib/bgg_remote"
+
+BggRemote.configure do |config|
+  config.token = nil
+end
+
+#ou
+#bgg_client = BggRemote::Client.new(nil)
+      </code></pre>
+
+      <pre><code class="language-bash">
+ruby test.rb
+# => token is required (BggRemote::Error::MissingToken)
+      </code></pre>
+    </article>
+
+    <article>
+      <h5>BggRemote::Error::Unauthorized</h5>
+
+      <p>
+        Teste utilizando um token inválido para validar o tratamento
+        de erro de autorização.
+      </p>
+
+      <pre><code class="language-ruby">
+      # bgg_remote/test.rb
+require_relative "./lib/bgg_remote"
+
+bgg_client = BggRemote::Client.new("")
+bgg_client.perform_request("thing", id: 1227)
+      </code></pre>
+
+      <pre><code class="language-bash">
+HTTP failed with code: 401, message Unauthorized
+(BggRemote::Error::Unauthorized)
+      </code></pre>
+    </article>
+
+    <article>
+      <h5>Endpoint <code>thing</code></h5>
+
+      <p>
+        Chamada real ao endpoint <code>thing</code> com token válido,
+        retornando o XML bruto da API.
+      </p>
+
+      <pre><code class="language-ruby">
+require_relative "./lib/bgg_remote"
+
+bgg_client = BggRemote::Client.new("ral token")
+bgg_client.perform_request("thing", id: 1227)
+      </code></pre>
+
+      <pre><code class="language-xml">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+  &lt;items&gt;
+    &lt;item type="boardgame" id="1227"&gt;
+      &lt;name type="primary" value="Stonewall" /&gt;
+      &lt;description&gt;
+        Um jogo de estratégia onde jogadores correm em um tabuleiro,
+        construindo muros para criar caminhos e bloquear oponentes.
+      &lt;/description&gt;
+      &lt;yearpublished value="1996" /&gt;
+      &lt;minplayers value="2" /&gt;
+      &lt;maxplayers value="4" /&gt;
+      &lt;playingtime value="45" /&gt;
+      &lt;minage value="8" /&gt;
+      &lt;link type="boardgamecategory" id="1009" value="Abstract Strategy" /&gt;
+      &lt;link type="boardgamecategory" id="1059" value="Maze" /&gt;
+    &lt;/item&gt;
+  &lt;/items&gt;
+      </code></pre>
+    </article>
+  </details>
+</section>
+
+<h4>Construindo a classe API</h4>
+<p>
+  A classe api usará a classe comum perform_request da classe client, ela será responsavel por passar o endpoint, parametros obrigatorio e extras,
+  optei por escrever uma funcao para cada enpoint, assim podemos aplicar algumas regras para cada endpoint futuramente com o proposito de facilitar um pouco
+  o uso da api do bgg, e manter a manutenção mais clara.
+</p>
+
+<pre>
+  <code class="language-ruby">
+require_relative "bgg_remote/version"
+require_relative "bgg_remote/error"
+require_relative "bgg_remote/client"
+require_relative "bgg_remote/api"
+
+module BggRemote
+  Config = Struct.new(:token, :timeout, keyword_init: true)
+
+  class << self
+    attr_reader :api
+
+    def configure
+      config = Config.new(timeout: 10)
+      yield config if block_given?
+
+      client = Client.new(config.token, timeout: config.timeout)
+      @api   = Api.new(client)
+    end
+  end
+end
+  </code>
+</pre>
+
+<pre>
+  <code class="language-ruby">
+#bgg_remote/api.rb
+class BggRemote::Api
+
+  def initialize client
+    @client = client
+  end
+
+  def thing(id:, **params)
+    @client.perform_request("thing", id: id, **params)
+  end
+
+  def family(id:, type: nil)
+    @client.perform_request("family", id: id, type: type)
+  end
+
+  def forum_list(id:, type: nil)
+    @client.perform_request("forumlist", id: id, type: type)
+  end
+
+  def forum(id:, page: nil)
+    @client.perform_request("forum", id: id, page: page)
+  end
+
+  def thread(id:, **params)
+    @client.perform_request("thread", id: id, **params)
+  end
+
+  def user(name:, **params)
+    @client.perform_request("user", name: name, **params)
+  end
+
+  def guild(id:, **params)
+    @client.perform_request("guild", id: id, **params)
+  end
+
+  def search(query:, **params)
+    @client.perform_request("search", query: query, **params)
+  end
+
+  def plays(username: nil, id: nil, **params)
+    @client.perform_request("plays", username: username, id: id, **params)
+  end
+
+  def hot_items(type:)
+    @client.perform_request("hot", type: type)
+  end
+
+  def collection(username:, **params)
+    @client.perform_request("collection", username: username, **params)
+  end
+end
+  </code>
+</pre>
+
+<h4>Validando classe API</h4>
+  <p>testando a funcao mais legal da api, buscar um boardgame: <span class="bg-primary text-light rounded px-2 py-1">thing</span></p>
+
+  <pre><code class="language-ruby">
+  require_relative "./lib/bgg_remote"
+
+  BggRemote.configure do |config|
+    config.token = "a6ebe64c-f964-4dd2-9266-6339d61f595c"
+  end
+
+  puts BggRemote.api.thing(id: 2277, stats: 1)
+  </code></pre>
+
+  <pre><code class="language-xml">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+  &lt;items&gt;
+    &lt;item type="boardgame" id="1227"&gt;
+      &lt;name type="primary" value="Stonewall" /&gt;
+      &lt;description&gt;
+        Um jogo de estratégia onde jogadores correm em um tabuleiro,
+        construindo muros para criar caminhos e bloquear oponentes.
+      &lt;/description&gt;
+      &lt;yearpublished value="1996" /&gt;
+      &lt;minplayers value="2" /&gt;
+      &lt;maxplayers value="4" /&gt;
+      &lt;playingtime value="45" /&gt;
+      &lt;minage value="8" /&gt;
+      &lt;link type="boardgamecategory" id="1009" value="Abstract Strategy" /&gt;
+      &lt;link type="boardgamecategory" id="1059" value="Maze" /&gt;
+    &lt;/item&gt;
+  &lt;/items&gt;
+  </code></pre>
+
+<h4>Melhorando a classe api</h4>
+<p>
+  Para coletar dados de conteúdo XML, é interessante convertê-los para um hash, pois a navegação pelos itens fica mais simples e intuitiva. Optei pela gem Crack
+  por sua facilidade de uso e formato de conversão acessível. Existem outras alternativas, como Oxml e Nori, mas o Crack atendeu melhor às necessidades. Adicionei também a opção
+  de habilitar ou desabilitar essa conversão, permitindo que o usuário final escolha um parser diferente, caso o Crack não seja ideal para seu objetivo e mais uma validação
+  extras para a função plays.
+</p>
+
+<small class="bg-body-secondary px-2 py-1 rounded">
+  api.rb
+</small>
+<pre class="mt-2"><code class="language-ruby">
+#bgg_remote/api.rb
+require 'crack/xml'
+
+class BggRemote::Api
+  attr_accessor :convert_to_hash
+
+  def initialize(client, convert_to_hash: true)
+    @client          = client
+    @convert_to_hash = convert_to_hash
+  end
+
+  def thing(id:, **params)
+    request("thing", id: id, **params)
+  end
+
+  def family(id:, type: nil)
+    request("family", id: id, type: type)
+  end
+
+  def forum_list(id:, type: nil)
+    request("forumlist", id: id, type: type)
+  end
+
+  def forum(id:, page: nil)
+    request("forum", id: id, page: page)
+  end
+
+  def thread(id:, **params)
+    request("thread", id: id, **params)
+  end
+
+  def user(name:, **params)
+    request("user", name: name, **params)
+  end
+
+  def guild(id:, **params)
+    request("guild", id: id, **params)
+  end
+
+  def search(query:, **params)
+    request("search", query: query, **params)
+  end
+
+  def plays(username: nil, id: nil, **params)
+    validate_at_least_one_of!(username: username, id: id)
+
+    request("plays", username: username, id: id, **params)
+  end
+
+  def hot_items(type:)
+    request("hot", type: type)
+  end
+
+  def collection(username:, **params)
+    request("collection", username: username, **params)
+  end
+
+  private
+
+  def request(endpoint, **query)
+    xml = @client.perform_request(endpoint, **query)
+    convert_to_hash? ? parse_xml(xml) : xml
+  end
+
+  def validate_at_least_one_of!(**values)
+    return if values.any? { |_, value| !!value }
+
+    raise ArgumentError, "You must provide at least one of: #{values.keys.join(', ')}"
+  end
+
+  def parse_xml(xml)
+    Crack::XML.parse(xml)
+  end
+
+  def convert_to_hash?
+    convert_to_hash != false
+  end
+end
+</code></pre>
+
+<small class="bg-body-secondary px-2 py-1 rounded mb-3">
+  bgg_remote.rb
+</small>
+
+<pre class="my-2"><code class="language-ruby">
+# frozen_string_literal: true
+
+require_relative "bgg_remote/version"
+require_relative "bgg_remote/error"
+require_relative "bgg_remote/client"
+require_relative "bgg_remote/api"
+
+module BggRemote
+  Config = Struct.new(:token, :timeout, :convert_to_hash, keyword_init: true)
+
+  class << self
+    attr_reader :api
+
+    def configure
+      config = Config.new(timeout: 10, convert_to_hash: true)
+      yield config if block_given?
+
+      client = Client.new(config.token, timeout: config.timeout)
+      @api   = Api.new(client, convert_to_hash: config.convert_to_hash)
+    end
+  end
+end
+</code></pre>
+
+<p>
+  Uma outra dependencia foi adicionada ao projeto "crack", isso deve ser definido como dependencia ao arquivo gemspec para
+  que essa ferramenta seja inclusa ao fazer o bundle da gem.
+</p>
+
+<pre class="mt-2"><code class="language-ruby">
+# Uncomment to register a new dependency of your gem
+spec.add_dependency 'httparty', '0.23.2'
+spec.add_dependency 'crack',    '1.0.1'
+</code></pre>
