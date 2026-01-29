@@ -46,6 +46,11 @@ social_links:
 
 plugins:
   - jekyll-feed
+  - jekyll-polyglot
+
+languages: ["en", "pt"]
+default_lang: "en"
+relative_localization: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.
