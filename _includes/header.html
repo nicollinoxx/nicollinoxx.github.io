@@ -29,6 +29,12 @@
                 </li>
               {%- endif -%}
             {%- endfor -%}
+
+            <li class="nav-item d-flex align-items-center">
+              <span class="nav-link p-0">
+                {%- include language_switcher.html -%}
+              </span>
+            </li>
           </ul>
         </div>
       {%- endif -%}
