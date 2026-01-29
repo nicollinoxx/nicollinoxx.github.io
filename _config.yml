@@ -19,12 +19,12 @@
 # in the templates via {{ site.myvariable }}.
 
 email: "nicolasalmeida321@gmail.com"
-title: Aprendendo a programar
+title: Learn to programing
 author: Nícolas Amaral
 
 description:
-  Este blog tem o propósito de compartilhar minha trajetória como desenvolvedor. Aqui divido minhas experiências com programação e projetos pessoais
-  que venho fazendo no mundo da tecnologia.
+  This blog aims to share my journey as a developer. Here I share my experiences with
+  programming and personal projects that I have been working on in the world of technology.
 
 # the base hostname & protocol for your site, e.g. http://example.com
 url:                "https://nicollinoxx.github.io"
