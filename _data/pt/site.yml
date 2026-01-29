@@ -1,5 +1,8 @@
 title: Aprendendo a programar
-about: Sobre
+
+about:
+  title: Sobre
+
 description:
   Este blog tem o propósito de compartilhar minha trajetória como desenvolvedor. Aqui divido minhas experiências com programação e projetos pessoais
   que venho fazendo no mundo da tecnologia.

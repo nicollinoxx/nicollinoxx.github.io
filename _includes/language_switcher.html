@@ -1,6 +1,6 @@
 <div class="dropdown">
   <button
-    class="btn btn-sm p-0 dropdown-toggle"
+    class="btn btn-sm px-1 p-0 dropdown-toggle"
     type="button"
     data-bs-toggle="dropdown"
     aria-expanded="false"
@@ -12,16 +12,12 @@
     {% for lang in site.languages %}
       {% if lang == site.active_lang %}
         <li>
-          <span class="dropdown-item active">
-            {{ lang }}
-          </span>
+          <span class="dropdown-item active">{{ lang }}</span>
         </li>
       {% else %}
         <li>
           <a class="dropdown-item"
-             {% static_href %}
-             href="{% if lang == site.default_lang %}{{ page.url }}{% else %}/{{ lang }}{{ page.url }}{% endif %}"
-             {% endstatic_href %}>
+             href="{% if lang == site.default_lang %}{{ page.url | relative_url }}{% else %}/{{ lang }}{{ page.url | relative_url }}{% endif %}">
             {{ lang }}
           </a>
         </li>
