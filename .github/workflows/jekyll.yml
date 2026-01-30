@@ -2,8 +2,8 @@ name: Build and Deploy Jekyll with Polyglot
 
 on:
   push:
-    branches: [master]  # ou master, gh-pages, o que você usa
-  workflow_dispatch:  # permite rodar manualmente
+    branches: ["master"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -11,8 +11,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "pages-${{ github.ref }}"
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -24,14 +24,14 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.3'  # ou a versão que você usa localmente
+          ruby-version: '3.2'
           bundler-cache: true
 
       - name: Install dependencies
-        run: bundle install
+        run: bundle install --jobs 4 --retry 3
 
       - name: Build Jekyll site
-        run: bundle exec jekyll build
+        run: bundle exec jekyll build --verbose
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -40,10 +40,10 @@ jobs:
 
   deploy:
     needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

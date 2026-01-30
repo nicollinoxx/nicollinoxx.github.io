@@ -8,6 +8,11 @@
 
     <main class="container py-5">
       <div class="mt-4">
+        <div class="text-end position-sticky" style="top: 4rem;">
+          {%- include language_switcher.html -%}
+        </div>
+
+
         {{ content }}
       </div>
     </main>

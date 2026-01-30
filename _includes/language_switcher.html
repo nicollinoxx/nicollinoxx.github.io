@@ -1,23 +1,22 @@
-<div class="dropdown">
+<div class="dropdown m-1">
   <button
-    class="btn btn-sm px-1 p-0 dropdown-toggle"
+    class="dropdown-toggle btn shadow border px-2 py-1 align-baseline"
     type="button"
     data-bs-toggle="dropdown"
-    aria-expanded="false"
-    aria-label="Change language">
-    <i class="bi bi-translate fs-6"> {{ site.active_lang }}</i>
+    aria-expanded="false">
+    <i class="bi bi-translate me-1"></i>
   </button>
 
   <ul class="dropdown-menu dropdown-menu-end">
     {% for lang in site.languages %}
       {% if lang == site.active_lang %}
-        <li>
-          <span class="dropdown-item active">{{ lang }}</span>
-        </li>
+        <li><span class="dropdown-item active">{{ lang }}</span></li>
       {% else %}
         <li>
           <a class="dropdown-item"
-             href="{% if lang == site.default_lang %}{{ page.url | relative_url }}{% else %}/{{ lang }}{{ page.url | relative_url }}{% endif %}">
+             {% static_href %}
+             href="{% if lang == site.default_lang %}{{ page.url }}{% else %}/{{ lang }}{{ page.url }}{% endif %}"
+             {% endstatic_href %}>
             {{ lang }}
           </a>
         </li>
