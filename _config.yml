@@ -18,16 +18,15 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-email: "nicolasalmeida321@gmail.com"
-title: Learn to programing
+email:  nicolasalmeida321@gmail.com
+title:  Learn to programing
 author: Nícolas Amaral
 
 description:
   This blog aims to share my journey as a developer. Here I share my experiences with
   programming and personal projects that I have been working on in the world of technology.
 
-# the base hostname & protocol for your site, e.g. http://example.com
-url:                "https://nicollinoxx.github.io"
+url:                https://nicollinoxx.github.io
 github_username:    nicollinoxx
 twitter_username:   nicollinoxx
 linkedin_username:  nicolas-amaral-de-almeida
