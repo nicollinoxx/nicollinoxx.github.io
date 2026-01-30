@@ -16,7 +16,10 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="{{ site.baseurl }}/portfolio/">Portfolio</a>
+              <a class="nav-link"
+                 {% static_href %} href="{{ '/portfolio/' | relative_url }}" {% endstatic_href %}>
+                Portfolio
+              </a>
             </li>
 
             {%- for path in page_paths -%}
