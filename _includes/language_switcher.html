@@ -10,14 +10,15 @@
   <ul class="dropdown-menu dropdown-menu-end">
     {% for lang in site.languages %}
       {% if lang == site.active_lang %}
-        <li><span class="dropdown-item active">{{ lang }}</span></li>
+        <li><span class="dropdown-item active">{{ site.data[site.active_lang].site.languages[lang] }}</span></li>
       {% else %}
         <li>
           <a class="dropdown-item"
              {% static_href %}
              href="{% if lang == site.default_lang %}{{ page.url }}{% else %}/{{ lang }}{{ page.url }}{% endif %}"
              {% endstatic_href %}>
-            {{ lang }}
+
+            {{ site.data[site.active_lang].site.languages[lang] }}
           </a>
         </li>
       {% endif %}
