@@ -1,0 +1,142 @@
+---
+layout: post
+title: "Scheduled Tweets"
+date: 2024-10-5 21:33:13 -0300
+categories: tutorial
+lang: en
+---
+
+<div>
+  <h3>Introduction</h3>
+  <p>
+    The following project was carried out in 2021 using Rails 6. This application was fundamental for my evolution with Ruby on Rails,
+    allowing me to deepen my knowledge of the language and the framework. The application consists of a system for scheduling tweets, where the
+    user can schedule messages to be sent directly to Twitter. So, if a tweet is scheduled for a 2-hour interval, it will
+    be sent automatically as soon as that time runs out. <br>
+  </p>
+
+  <p>
+    Project repository: <a href="https://github.com/nicollinoxx/scheduled_tweets0.2">"Scheduled tweets" repository</a>
+  </p>
+
+  <h3>Schedule Tweets</h3>
+  <p>
+    The "Schedule Tweets" application is a beginner's tutorial developed by Go Rails. This platform offers an effective way to learn web development and
+    solve common problems. The tutorials cover a variety of topics, such as Ruby on Rails, Hotwire, Turbo, Stimulus.js, and PostgreSQL. In addition, Go Rails has a
+    YouTube channel where you can follow new tutorials that provide a practical and visual approach to understanding Rails concepts.
+    <a href="https://www.youtube.com/@GorailsTV/featured">"Go Rails" Channel.</a>
+  </p>
+
+  <h3>Development Journey</h3>
+  <p>
+    The development journey of the project began with deepening the concepts of the "Model, View, and Controller" (MVC) architecture and understanding HTTP requests.
+    From there, the construction of the application began with the implementation of the first CRUD, which covered concepts of routes, validations, helpers for forms, and the
+    use of partials for code reuse in views.
+  </p>
+
+  <p>
+    To improve the application's appearance, the Bootstrap framework was integrated, which made it easier to create a pleasant interface. From that point on, the
+    application was also configured on GitHub for version control, creating a repository and making the first commits.
+  </p>
+
+  <p>
+    Next, user authentication functionality was added along with the OmniAuth tool to allow login with Twitter. This phase presented some challenges,
+    as it involved credential configuration and secure communication with the authentication provider. However, the integration was successful.
+  </p>
+
+  <p>
+    To enable tweet scheduling, ActiveJob was used, a library integrated into Rails that facilitates background task processing.
+    This approach was essential so that tweets could be sent automatically after the scheduled time, without impacting the application's performance.
+  </p>
+
+  <p>
+    Finally, the application was deployed on Heroku, a hosting platform that simplifies the publishing process. Setting up the production environment and seeing the application running
+    online was a rewarding moment and an important milestone in my journey as a developer.
+  </p>
+
+  <h3>Experiences</h3>
+   <p>
+     The complete development of this project was challenging but rewarding. During the process, I had the opportunity to work with several new tools,
+     which broadened my skills. Here are some of the main tools and concepts I learned.
+   </p>
+
+   <ul>
+     <li>
+       <p>
+         <strong>Sidekiq:</strong> A powerful tool for background processing in Ruby on Rails. With Sidekiq, you can run tasks that take a long time
+         (such as sending scheduled tweets) without blocking the application's performance. Time-consuming operations are handled asynchronously.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>pgAdmin:</strong> A graphical interface for managing PostgreSQL databases. Learning to use pgAdmin made it easier to view and manipulate data,
+         allowing me to perform complex queries, check database integrity, and optimize tables.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>Sessions:</strong> The use of sessions in Rails allows you to store temporary information on the server. This is essential for maintaining user data between requests,
+         such as preferences or authentication states.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>Database and Migrations:</strong> I deepened my understanding of relational databases and the use of migrations to manage changes in the
+         database structure. Migrations are important to maintain the integrity of the database schema and ensure it evolves along with the application.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>Git Commands:</strong> During development, I used Git to version my code, allowing me to track changes more effectively.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>Authentication with OmniAuth:</strong> OmniAuth was implemented to allow the application to interact with Twitter. OmniAuth is a library that enables
+         authentication through external providers such as Google, Facebook, and Twitter. OmniAuth manages credentials and communication with providers securely,
+         simplifying the integration of social authentication.
+       </p>
+     </li>
+
+     <li>
+       <p>
+         <strong>Bootstrap:</strong> I used the Bootstrap framework to create a responsive and beautiful design for the application. Bootstrap offers a variety of
+         pre-styled components that make it easy to build modern and accessible user interfaces.
+       </p>
+     </li>
+   </ul>
+
+   <p>
+     The final stage of the project was the most satisfying, as it was when I managed to implement the application on the web, hosting it on <a href="https://www.heroku.com/">Heroku</a>. Heroku
+     simplifies the deployment process, allowing developers to publish their applications easily, managing all the necessary infrastructure. Seeing my application
+     running online was an incredible achievement and a big step in my journey as a developer.
+   </p>
+</div>
+
+<h3>Application Images</h3>
+<h4>Welcome screen</h4>
+<img src="/attachments/tweets_agendados/welcome.png">
+
+<h4>Screen to connect the Twitter account</h4>
+<img src="/attachments/tweets_agendados/login.png">
+<p>This is where the magic happens. The OmniAuth library connects Twitter with the application, allowing posts to be sent to Twitter when the waiting time expires.</p>
+
+<h4>Twitter account login successful</h4>
+<img src="/attachments/tweets_agendados/login_account_twitter.jpeg">
+
+<h4>Tweets</h4>
+<img src="/attachments/tweets_agendados/index_tweets.png">
+<p>View of the application's posts. This is where scheduled and posted tweets are shown.</p>
+
+<h3>Conclusion</h3>
+<p>
+  The development of this application provided valuable learning in several areas of web development with Ruby on Rails. Concepts such as MVC,
+  authentication with OmniAuth, background processing with Sidekiq, database management with pgAdmin, and responsive design with Bootstrap
+  broadened my skills as a developer. In addition, the challenges faced and overcome throughout the project contributed to my growth and learning.
+  Seeing the application running on the web was quite an achievement.
+</p>
